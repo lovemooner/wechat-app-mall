@@ -1,6 +1,8 @@
 const WXAPI = require('apifm-wxapi')
+const CONFIG = require('../../config')
 const AUTH = require('../../utils/auth')
 const TOOLS = require('../../utils/tools.js') // TOOLS.showTabBarBadge();
+const LZH = require('../../utils/lzh.js')
 
 Page({
   /**
@@ -16,9 +18,8 @@ Page({
     currentGoods: [],
     onLoadStatus: true,
     scrolltop: 0,
-
     skuCurGoods: undefined,
-    page: 1,
+    current: 1,
     pageSize: 20
   },
   /**
@@ -37,7 +38,8 @@ Page({
     wx.showLoading({
       title: '',
     })
-    const res = await WXAPI.goodsCategory()
+
+    const res = await LZH.productCategory()
     wx.hideLoading()
     let activeCategory = 0
     let categorySelected = this.data.categorySelected
@@ -51,6 +53,7 @@ Page({
           return p.id == ele.pid
         })
       })
+
       const firstCategories = categories.filter(ele => { return ele.level == 1 })
       if (this.data.categorySelected.id) {
         activeCategory = firstCategories.findIndex(ele => {
@@ -68,7 +71,7 @@ Page({
         }
       }
       this.setData({
-        page: 1,
+        current: 1,
         activeCategory,
         categories,
         firstCategories,
@@ -93,14 +96,15 @@ Page({
       categoryId = this.data.categorySelected.id
     }
     // https://www.yuque.com/apifm/nu0f75/wg5t98
-    const res = await WXAPI.goodsv2({
+    const res= await LZH.getProduct({
       categoryId,
-      page: this.data.page,
+      current: this.data.current,
       pageSize: this.data.pageSize
     })
+
     wx.hideLoading()
     if (res.code == 700) {
-      if (this.data.page == 1) {
+      if (this.data.current == 1) {
         this.setData({
           currentGoods: null
         });
@@ -112,6 +116,8 @@ Page({
       }
       return
     }
+
+
     if (res.code != 0) {
       wx.showToast({
         title: res.msg,
@@ -119,13 +125,13 @@ Page({
       })
       return
     }
-    if (this.data.page == 1) {
+    if (this.data.current == 1) {
       this.setData({
-        currentGoods: res.data.result
+        currentGoods: res.data.records
       })
     } else {
       this.setData({
-        currentGoods: this.data.currentGoods.concat(res.data.result)
+        currentGoods: this.data.currentGoods.concat(res.data.records)
       })
     }
   },
@@ -144,7 +150,7 @@ Page({
       adPosition = res.data
     }
     this.setData({
-      page: 1,
+      current: 1,
       secondCategoryId: '',
       activeCategory: idx,
       categorySelected,
@@ -161,7 +167,7 @@ Page({
       secondCategoryId = this.data.categorySelected.childs[idx-1].id
     }
     this.setData({
-      page: 1,
+      current: 1,
       secondCategoryId
     });
     this.getGoodsList();
@@ -176,7 +182,7 @@ Page({
   },
   onShareAppMessage() {    
     return {
-      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      title: '"' + CONFIG.mallName + '" ' + wx.getStorageSync('share_profile'),
       path: '/pages/index/index?inviter_id=' + wx.getStorageSync('uid')
     }
   },
@@ -263,7 +269,7 @@ Page({
     }
   },
   goodsGoBottom() {
-    this.data.page++
+    this.data.current++
     this.getGoodsList()
   },
   adPositionClick(e) {

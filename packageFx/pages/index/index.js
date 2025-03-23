@@ -1,6 +1,7 @@
-const WXAPI = require('apifm-wxapi')
+const WXAPI = require('apifm-wxapi');
 const AUTH = require('../../../utils/auth')
 const ImageUtil = require('../../../utils/image')
+const CONFIG = require('../../../config');
 const APP = getApp()
 
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
@@ -337,7 +338,7 @@ Page({
   },
   onShareAppMessage() {    
     return {
-      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      title: '"' + CONFIG.mallName + '" ' + wx.getStorageSync('share_profile'),
       path: '/pages/index/index?inviter_id=' + wx.getStorageSync('uid'),
       imageUrl: wx.getStorageSync('share_pic'),
       success: function (res) {
@@ -350,7 +351,7 @@ Page({
   },
   onShareTimeline() {    
     return {
-      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      title: '"' + CONFIG.mallName+ '" ' + wx.getStorageSync('share_profile'),
       query: 'inviter_id=' + wx.getStorageSync('uid'),
       imageUrl: this.data.goodsDetail.basicInfo.pic
     }

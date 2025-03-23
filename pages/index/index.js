@@ -147,7 +147,7 @@ Page({
     }
   },
   readConfigVal() {
-    const mallName = wx.getStorageSync('mallName')
+    const mallName = CONFIG.mallName;
     if (!mallName) {
       return
     }
@@ -156,7 +156,7 @@ Page({
       title: mallName
     })
     this.setData({
-      mallName:wx.getStorageSync('mallName')?wx.getStorageSync('mallName'):'',
+      mallName:CONFIG.mallName,
       show_buy_dynamic: wx.getStorageSync('show_buy_dynamic'),
       hidden_goods_index: wx.getStorageSync('hidden_goods_index'),
     })
@@ -301,13 +301,13 @@ Page({
   },
   onShareAppMessage: function() {    
     return {
-      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      title: '"' + CONFIG.mallName + '" ' + wx.getStorageSync('share_profile'),
       path: '/pages/index/index?inviter_id=' + wx.getStorageSync('uid')
     }
   },
   onShareTimeline() {    
     return {
-      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      title: '"' + CONFIG.mallName + '" ' + wx.getStorageSync('share_profile'),
       query: 'inviter_id=' + wx.getStorageSync('uid'),
       imageUrl: wx.getStorageSync('share_pic')
     }

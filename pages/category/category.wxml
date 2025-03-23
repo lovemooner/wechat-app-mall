@@ -4,7 +4,7 @@
 <view class="main">
   <scroll-view class="category-container" scroll-y="true" scroll-with-animation="true" scroll-into-view="{{ aaa }}">
     <van-sidebar custom-class="sidebar-l" active-key="{{ activeCategory }}">
-      <van-sidebar-item wx:if="{{item.level == 1}}" id="category{{item.id}}" wx:for="{{firstCategories}}" wx:key="id" data-idx="{{index}}" bindtap="onCategoryClick" title="{{ item.name }}" />
+      <van-sidebar-item wx:if="{{item.level == 1}}" id="category{{item.id}}" wx:for="{{firstCategories}}" wx:key="id" data-idx="{{index}}" bindtap="onCategoryClick" title="{{ item.categoryName }}" />
     </van-sidebar>
   </scroll-view>
   <scroll-view class="goods-container" scroll-y="true" scroll-top="{{scrolltop}}" wx:if='{{onLoadStatus}}' bindscrolltolower="goodsGoBottom">
@@ -61,14 +61,15 @@
       }
     }
     </wxs>
+
     <van-card
       wx:for="{{currentGoods}}" wx:key="id"
-      price="{{item.minPrice}}"
-      desc="{{item.numberSells ? '已售' + item.numberSells : ''}}"
+      price="{{item.productPrice}}"
+      desc="{{item.productNum ? '已售' + item.productNum : ''}}"
       tag="{{item.gotScore ? (item.gotScore + (item.gotScoreType ? '%' : '') + '积分') : ''}}"
-      title="{{item.name}}"
+      title="{{item.productName}}"
       title-class="title-class-apifm"
-      thumb="{{item.pic}}"
+      thumb="{{item.coverImg}}"
       thumb-link="{{ goodsDetailPage.url(item) }}"
     >
       <view wx:if="{{ item.supplyType != 'vop_jd' }}" class="goods-btn" slot="footer">

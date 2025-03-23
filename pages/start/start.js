@@ -20,12 +20,12 @@ Page({
     
   },
   async readConfigVal() {
-    const mallName = wx.getStorageSync('mallName')
+    const mallName = CONFIG.mallName
     if (!mallName) {
       return
     }
     wx.setNavigationBarTitle({
-      title: wx.getStorageSync('mallName')
+      title: CONFIG.mallName
     })
     let shopMod = wx.getStorageSync('shopMod')
     if (!shopMod) {
