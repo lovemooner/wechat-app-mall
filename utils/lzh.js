@@ -1,14 +1,11 @@
 var request = function request(url, method, data) {
-  var _url = "http://47.116.87.201"+url;
+  var _url = "https://www.lzh8888.cn/shop"+url;
   if (url.indexOf("http") == 0) {
-
     _url = url;
   }
   var header = {
     'Content-Type': 'application/json'
   };
-  
-  console.log(_url)
   return new Promise(function (resolve, reject) {
     wx.request({
       url: _url,
@@ -19,7 +16,7 @@ var request = function request(url, method, data) {
         resolve(request.data);
       },  
       fail: function fail(error) {
-        console.log("fail"+error)
+        console.log("fail: "+error)
         reject(error);
       },
       complete: function complete(aaa) {
@@ -34,10 +31,37 @@ module.exports = {
     if (!data) {
       data = {};
     }
-    return request('/shop/product/list', 'get', data);
+    return request('/product/list', 'get', data);
   },
   productCategory: function productCategory() {
-    return request('/shop/category/all', 'get');
-  }
+    return request('/category/all', 'get');
+  },
+  noticeList: function noticeList(data) {
+    return request('/notice-list', 'post', data);
+  },
+  adPosition: function adPosition(key) {
+    return request('/site/adPosition/info', 'get', { key: key });
+  },
+  banners: function banners(data) {
+    return request('/banner-list', 'get', data);
+  },
+  login_wx: function login_wx(code) {
+    return request('/user/login', 'post', {
+      code: code,
+      type: 2
+    });
+  },
+
+  userDetail: function userDetail(token) {
+    return request('/user/detail', 'get', {
+      token: token
+    });
+  },
+  checkToken: function checkToken(token) {
+    return request('/user/check-token', 'get', {
+      token: token
+    });
+  },
+  // token: wx.getStorageSync('token'),
 
 }

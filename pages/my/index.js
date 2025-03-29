@@ -2,6 +2,9 @@ const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const TOOLS = require('../../utils/tools.js')
 const CONFIG = require('../../config.js')
+const LZH = require('../../utils/lzh.js')
+
+
 Page({
 	data: {
     balance:0.00,
@@ -27,6 +30,7 @@ Page({
 	},
   onShow() {
     AUTH.checkHasLogined().then(isLogined => {
+      debugger
       if (isLogined) {
         this.getUserApiInfo();
         this.getUserAmount();
@@ -59,7 +63,7 @@ Page({
     })
   },
   async getUserApiInfo() {
-    const res = await WXAPI.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail(wx.getStorageSync('token'))
     if (res.code == 0) {
       let _data = {}
       _data.apiUserInfoMap = res.data

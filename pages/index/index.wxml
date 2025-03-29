@@ -59,24 +59,26 @@ module.exports = {
     </swiper>
   </view>
 </view>
+
 <view class="category-container">
   <view class="category-box">
     <view class="category-list" wx:for="{{categories}}" wx:key="id">
       <view class="category-column" bindtap="tabClick"
         data-id="{{item.id}}">
-        <image mode="aspectFill" class="category-imgbox" src="{{item.icon}}"></image>
-        <view class="category-title">{{item.name}}</view>
+        <image mode="aspectFill" class="category-imgbox" src="{{item.iconUrl}}"></image>
+        <view class="category-title">{{item.categoryName}}</view>
       </view>
     </view>
     <view class="category-list" wx:for="{{cmsCategories}}" wx:key="id">
       <view class="category-column" bindtap="tabClickCms"
         data-idx="{{ index }}">
         <image mode="aspectFill" class="category-imgbox" src="{{item.icon}}"></image>
-        <view class="category-title">{{item.name}}</view>
+        <view class="category-title">{{item.categoryName}}</view>
       </view>
     </view>
   </view>
 </view>
+
 <view class="notice-box" wx:if="{{noticeList}}">
   <swiper class="notice_swiper" vertical autoplay circular interval="8000">
     <swiper-item wx:for="{{noticeList.dataList}}" wx:key="id">
@@ -132,12 +134,12 @@ module.exports = {
   <view class="goods-container" wx:if="{{goodsRecommend.length > 0}}">
     <view class="goods-box" wx:for="{{goodsRecommend}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}" data-supplytype="{{item.supplyType}}" data-yyid="{{item.yyId}}">
       <view class="img-box">
-        <image src="{{item.pic}}" class="image" mode="aspectFill" lazy-load="true" />
+        <image src="{{item.coverImgUrl}}" class="image" mode="aspectFill" lazy-load="true" />
       </view>
-      <view class="goods-title van-multi-ellipsis--l2">{{item.name}}</view>
+      <view class="goods-title van-multi-ellipsis--l2">{{item.productName}}</view>
       <view wx:if="{{item.characteristic}}" class="characteristic van-multi-ellipsis--l2" style="-webkit-line-clamp: 1;">{{item.characteristic}}</view>
       <view style='display:flex;'>
-        <view class="goods-price">¥ {{item.minPrice}}</view>
+        <view class="goods-price">¥ {{item.productPrice}}</view>
         <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price"
           style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
       </view>
@@ -191,9 +193,9 @@ module.exports = {
   <view class="goods-container">
     <view class="goods-box" wx:for="{{goods}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}" data-supplytype="{{item.supplyType}}" data-yyid="{{item.yyId}}">
       <view class="img-box">
-        <image src="{{item.pic}}" class="image" mode="aspectFill" lazy-load="true" />
+        <image src="{{item.coverImgUrl}}" class="image" mode="aspectFill" lazy-load="true" />
       </view>
-      <view class="goods-title van-multi-ellipsis--l2">{{item.name}}</view>
+      <view class="goods-title van-multi-ellipsis--l2">{{item.productName}}</view>
       <view wx:if="{{item.characteristic}}" class="characteristic van-multi-ellipsis--l2" style="-webkit-line-clamp: 1;">{{item.characteristic}}</view>
       <view class="goods-price-container">
         <view class="goods-price">¥ {{item.minPrice}}</view>
@@ -204,9 +206,11 @@ module.exports = {
   </view>
   <van-divider wx:if="{{ !loadingMoreHidden }}" contentPosition="center">没有更多啦</van-divider>
 </view>
-<view class='coupons-float' bindtap="goCoupons">
+
+<!-- 右下角礼物图标 -->
+<!-- <view class='coupons-float' bindtap="goCoupons">
   <image src="/images/gift.png"></image>
-</view>
+</view> -->
 
 <van-overlay show="{{ adPositionIndexPop }}">
   <view class="adPositionIndexPop">

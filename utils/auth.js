@@ -1,5 +1,8 @@
 const WXAPI = require('apifm-wxapi')
 const CONFIG = require('../config.js')
+const LZH = require('lzh.js')
+
+
 async function checkSession(){
   return new Promise((resolve, reject) => {
     wx.checkSession({
@@ -39,7 +42,8 @@ async function checkHasLogined() {
     wx.removeStorageSync('token')
     return false
   }
-  const checkTokenRes = await WXAPI.checkToken(token)
+  const checkTokenRes = await LZH.checkToken(token)
+  debugger
   if (checkTokenRes.code != 0) {
     wx.removeStorageSync('token')
     return false
@@ -96,10 +100,9 @@ async function login(page){
           }
         })
       } else {
-        WXAPI.login_wx(res.code).then(function (res) {        
+        LZH.login_wx(res.code).then(function (res) {    
           if (res.code == 10000) {
-            // 去注册
-            return;
+            return;  // 去注册
           }
           if (res.code != 0) {
             // 登录错误
@@ -110,6 +113,7 @@ async function login(page){
             })
             return;
           }
+
           wx.setStorageSync('token', res.data.token)
           wx.setStorageSync('uid', res.data.uid)
           if (CONFIG.bindSeller) {
@@ -189,33 +193,37 @@ async function authorize() {
 // 最新的登陆接口，建议用这个
 async function login20241025() {
   const code = await wxaCode()
+  console.log("code:"+code)
   const extConfigSync = wx.getExtConfigSync()
-  if (extConfigSync.subDomain) {
-    // 服务商模式
-    const res = await WXAPI.wxappServiceLogin({ code })
-    if (res.code == 10000) {
-      // 去注册
-      return res
-    }
-    if (res.code != 0) {
-      // 登录错误
-      wx.showModal({
-        content: res.msg,
-        showCancel: false
-      })
-      return res
-    }
-    wx.setStorageSync('token', res.data.token)
-    wx.setStorageSync('uid', res.data.uid)
-    wx.setStorageSync('openid', res.data.openid)
-    wx.setStorageSync('mobile', res.data.mobile)
-    if (CONFIG.bindSeller) {
-      this.bindSeller()
-    }
-    return res
-  } else {
+  // if (extConfigSync.subDomain) {
+  //   // 服务商模式
+  //   const res = await WXAPI.wxappServiceLogin({ code })
+  //   if (res.code == 10000) {
+  //     // 去注册
+  //     return res
+  //   }
+  //   if (res.code != 0) {
+  //     // 登录错误
+  //     wx.showModal({
+  //       content: res.msg,
+  //       showCancel: false
+  //     })
+  //     return res
+  //   }
+  //   wx.setStorageSync('token', res.data.token)
+  //   wx.setStorageSync('uid', res.data.uid)
+  //   wx.setStorageSync('openid', res.data.openid)
+  //   wx.setStorageSync('mobile', res.data.mobile)
+  //   if (CONFIG.bindSeller) {
+  //     this.bindSeller()
+  //   }
+  //   return res
+  // } else {
     // 非服务商模式
-    const res = await WXAPI.login_wx(code)
+    console.log("非服务商模式")
+    const res = await LZH.login_wx(code)
+    console.log("res "+res)
+    debugger
     if (res.code == 10000) {
       // 去注册
       return res;
@@ -236,7 +244,7 @@ async function login20241025() {
       this.bindSeller()
     }
     return res
-  }
+  // }
 }
 
 function loginOut(){

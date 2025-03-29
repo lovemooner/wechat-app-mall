@@ -19,7 +19,7 @@
       <view class="small-category-box">
         <navigator wx:for="{{categorySelected.childs}}" wx:key="id" url="/pages/goods/list?categoryId={{item.id}}">
           <view class="small-category">
-            <image mode="aspectFill" src="{{item.icon}}" mode="aspectFill"></image>
+            <image mode="aspectFill" src="{{item.iconUrl}}" mode="aspectFill"></image>
             <view>{{item.name}}</view>
           </view>
         </navigator>
@@ -69,7 +69,7 @@
       tag="{{item.gotScore ? (item.gotScore + (item.gotScoreType ? '%' : '') + '积分') : ''}}"
       title="{{item.productName}}"
       title-class="title-class-apifm"
-      thumb="{{item.coverImg}}"
+      thumb="{{item.coverImgUrl}}"
       thumb-link="{{ goodsDetailPage.url(item) }}"
     >
       <view wx:if="{{ item.supplyType != 'vop_jd' }}" class="goods-btn" slot="footer">

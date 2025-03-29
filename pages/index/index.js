@@ -2,6 +2,7 @@ const WXAPI = require('apifm-wxapi')
 const TOOLS = require('../../utils/tools.js')
 const AUTH = require('../../utils/auth')
 const CONFIG = require('../../config.js')
+const LZH = require('../../utils/lzh.js')
 const APP = getApp()
 
 Page({
@@ -103,17 +104,17 @@ Page({
       withShareTicket: true,
     })
     const that = this
-    // 读取分享链接中的邀请人编号
-    if (e && e.inviter_id) {
-      wx.setStorageSync('referrer', e.inviter_id)
-    }
-    // 读取小程序码中的邀请人编号
-    if (e && e.scene) {
-      const scene = decodeURIComponent(e.scene)
-      if (scene) {        
-        wx.setStorageSync('referrer', scene.substring(11))
-      }
-    }
+    // // 读取分享链接中的邀请人编号
+    // if (e && e.inviter_id) {
+    //   wx.setStorageSync('referrer', e.inviter_id)
+    // }
+    // // 读取小程序码中的邀请人编号
+    // if (e && e.scene) {
+    //   const scene = decodeURIComponent(e.scene)
+    //   if (scene) {        
+    //     wx.setStorageSync('referrer', scene.substring(11))
+    //   }
+    // }
     AUTH.checkHasLogined().then(isLogined => {
       if (isLogined) {
         TOOLS.showTabBarBadge()
@@ -126,12 +127,12 @@ Page({
     this.initBanners()
     this.cmsCategories()
     // https://www.yuque.com/apifm/nu0f75/wg5t98
-    WXAPI.goodsv2({
+    LZH.getProduct({
       recommendStatus: 1
     }).then(res => {
       if (res.code === 0){
         that.setData({
-          goodsRecommend: res.data.result
+          goodsRecommend: res.data.records
         })
       }      
     })
@@ -191,7 +192,7 @@ Page({
   async initBanners(){
     const _data = {}
     // 读取头部轮播图
-    const res1 = await WXAPI.banners({
+    const res1 = await LZH.banners({
       type: 'index'
     })
     if (res1.code == 700) {
@@ -234,7 +235,7 @@ Page({
     }
   },
   async categories(){
-    const res = await WXAPI.goodsCategory()
+    const res = await LZH.productCategory()
     let categories = [];
     if (res.code == 0) {
       const _categories = res.data.filter(ele => {
@@ -246,21 +247,19 @@ Page({
       categories: categories,
       curPage: 1
     });
-    this.getGoodsList(0);
+    this.getGoodsList();
   },
-  async getGoodsList(categoryId, append) {
-    if (categoryId == 0) {
-      categoryId = "";
-    }
+  async getGoodsList(productName, append) {
     wx.showLoading({
       title: ''
     })
     // https://www.yuque.com/apifm/nu0f75/wg5t98
-    const res = await WXAPI.goodsv2({
-      categoryId: categoryId,
+    const res = await LZH.getProduct({
+      productName: productName,
       page: this.data.curPage,
       pageSize: this.data.pageSize
     })
+
     wx.hideLoading()
     if (res.code == 404 || res.code == 700) {
       let newData = {
@@ -276,8 +275,10 @@ Page({
     if (append) {
       goods = this.data.goods
     }
-    for (var i = 0; i < res.data.result.length; i++) {
-      const item = res.data.result[i]
+
+    for (var i = 0; i < res.data.records.length; i++) {
+      
+      const item = res.data.records[i]
       const hidden_goods_index = wx.getStorageSync('hidden_goods_index')
       if (hidden_goods_index.indexOf(item.id) != -1) {
         continue
@@ -312,9 +313,10 @@ Page({
       imageUrl: wx.getStorageSync('share_pic')
     }
   },
+
   getNotice: function() {
     var that = this;
-    WXAPI.noticeList({pageSize: 5}).then(function (res) {
+    LZH.noticeList({size: 5}).then(function (res) {
       if (res.code == 0) {
         that.setData({
           noticeList: res.data
@@ -326,13 +328,13 @@ Page({
     this.setData({
       curPage: this.data.curPage + 1
     });
-    this.getGoodsList(0, true)
+    this.getGoodsList('', true)
   },
   onPullDownRefresh: function() {
     this.setData({
       curPage: 1
     });
-    this.getGoodsList(0)
+    this.getGoodsList()
     wx.stopPullDownRefresh()
   },
   // 获取砍价商品
@@ -392,11 +394,14 @@ Page({
       url: '/pages/notice/show?id=' + id,
     })
   },
+
+  // 幸运大抽奖
   async adPosition() {
     let res = await WXAPI.adPosition('indexPop')
     if (res.code == 0) {
       this.setData({
-        adPositionIndexPop: res.data
+        // adPositionIndexPop: res.data
+        adPositionIndexPop: false
       })
     } else {
       // 没有广告位，弹出编辑昵称头像框
@@ -405,7 +410,8 @@ Page({
     res = await WXAPI.adPosition('index-live-pic')
     if (res.code == 0) {
       this.setData({
-        adPositionIndexLivePic: res.data
+        // adPositionIndexLivePic: res.data
+        adPositionIndexLivePic: false
       })
     }
   },

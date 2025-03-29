@@ -38,7 +38,7 @@ Page({
     wx.showLoading({
       title: '',
     })
-
+    
     const res = await LZH.productCategory()
     wx.hideLoading()
     let activeCategory = 0
@@ -55,17 +55,19 @@ Page({
       })
 
       const firstCategories = categories.filter(ele => { return ele.level == 1 })
-      if (this.data.categorySelected.id) {
+      if (this.data.categorySelected.categoryName) {
         activeCategory = firstCategories.findIndex(ele => {
-          return ele.id == this.data.categorySelected.id
+          return ele.id == this.data.categorySelected.categoryName
         })
         categorySelected = firstCategories[activeCategory]
       } else {
         categorySelected = firstCategories[0]
       }
+    
+      console.log("categorySelected "+categorySelected.categoryName)
       let adPosition = null
       if (categorySelected) {
-        const resAd = await WXAPI.adPosition('category_' + categorySelected.id)
+        const resAd = await WXAPI.adPosition('category_' + categorySelected.categoryName)
         if (resAd.code === 0) {
           adPosition = resAd.data
         }
@@ -89,15 +91,15 @@ Page({
       title: '',
     })
     // secondCategoryId
-    let categoryId = ''
+    let categoryName = ''
     if (this.data.secondCategoryId) {
-      categoryId = this.data.secondCategoryId
-    } else if(this.data.categorySelected && this.data.categorySelected.id) {
-      categoryId = this.data.categorySelected.id
+      categoryName = this.data.secondCategoryId
+    } else if(this.data.categorySelected && this.data.categorySelected.categoryName) {
+      categoryName = this.data.categorySelected.categoryName
     }
     // https://www.yuque.com/apifm/nu0f75/wg5t98
     const res= await LZH.getProduct({
-      categoryId,
+      categoryName,
       current: this.data.current,
       pageSize: this.data.pageSize
     })
@@ -144,7 +146,7 @@ Page({
       return
     }
     const categorySelected = this.data.firstCategories[idx]
-    const res = await WXAPI.adPosition('category_' + categorySelected.id)
+    const res = await WXAPI.adPosition('category_' + categorySelected.categoryName)
     let adPosition = null
     if (res.code === 0) {
       adPosition = res.data
@@ -164,7 +166,7 @@ Page({
     let secondCategoryId = ''
     if (idx) {
       // 点击了具体的分类
-      secondCategoryId = this.data.categorySelected.childs[idx-1].id
+      secondCategoryId = this.data.categorySelected.childs[idx-1].categoryName
     }
     this.setData({
       current: 1,
@@ -172,6 +174,7 @@ Page({
     });
     this.getGoodsList();
   },
+
   bindconfirm(e) {
     this.setData({
       inputVal: e.detail
@@ -210,7 +213,9 @@ Page({
       this.categories();
     }
   },
+
   async addShopCar(e) {
+    debugger
     const curGood = this.data.currentGoods.find(ele => {
       return ele.id == e.currentTarget.dataset.id
     })
