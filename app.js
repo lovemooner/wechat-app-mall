@@ -1,6 +1,7 @@
 const WXAPI = require('apifm-wxapi')
 const CONFIG = require('config.js')
 const AUTH = require('utils/auth')
+const LZH = require('./utils/lzh')
 App({
   onLaunch: function() {
     const subDomain = wx.getExtConfigSync().subDomain
@@ -167,7 +168,7 @@ App({
     })
   },
   async getUserApiInfo() {
-    const res = await WXAPI.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail(wx.getStorageSync('token'))
     if (res.code == 0) {
       this.globalData.apiUserInfoMap = res.data
     }

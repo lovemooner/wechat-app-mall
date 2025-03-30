@@ -1,5 +1,5 @@
 module.exports = {
-  version: '25.03.12',
+  version: '25.03.30',
   note: '资金明显，增加按时间筛选', // 这个为版本描述，无需修改
   subDomain: 'lzh888', // 此处改成你自己的专属域名。什么是专属域名？请看教程 https://www.it120.cc/help/qr6l4m.html
   merchantId: 71189, // 商户ID，可在后台工厂设置-->商户信息查看

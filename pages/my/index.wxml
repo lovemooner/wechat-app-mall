@@ -19,28 +19,8 @@
     <view class="txt">会员码</view>
   </view>
 </view>
-<view class="asset">
-  <view class='item' bindtap='goAsset'>
-    <view class="amount">{{balance}}</view>
-    <view>余额</view>
-  </view>
-  <view class='item right' bindtap='goAsset'>
-    <view class="amount">{{freeze}}</view>
-    <view>冻结</view>
-  </view>
-  <view class='item right' bindtap='goScore'>
-    <view class="amount">{{score}}</view>
-    <view>积分</view>
-  </view>
-  <view class='item right' bindtap="gogrowth">
-    <view class="amount">{{growth}}</view>
-    <view>成长值</view>
-  </view>
-</view>
+
 <view class="space van-hairline--bottom"></view>
-<van-cell-group wx:if="{{ myCards }}" title="我的会员卡">
-  <van-cell wx:for="{{ myCards }}" wx:key="id" center title="{{ item.cardInfo.name }}" label="{{ item.dateEnd }} 到期" value-class="v-c" value="剩余: {{ item.amount }}" is-link url="/pages/card/logs?id={{ item.id }}" />
-</van-cell-group>
 <van-cell title="我的订单" value="更多" is-link url="/pages/order-list/index" />
 <van-grid clickable column-num="5">
   <van-grid-item icon="balance-list-o" text="待付款" badge="{{count_id_no_pay}}" bindtap='goOrder' data-type="0" />
@@ -49,40 +29,17 @@
   <van-grid-item icon="flower-o" text="待评价" badge="{{count_id_no_reputation}}" bindtap='goOrder' data-type="3" />
   <van-grid-item icon="after-sale" text="售后" bindtap='goOrder' data-type="99" />
 </van-grid>
-<van-cell wx:if="{{ cps_open == '1' }}" title="CPS订单" value="管理" is-link url="/packageCps/pages/order-list/cps" />
-<van-cell wx:if="{{ recycle_open == '1' }}" title="回收订单" value="管理" is-link url="/pages/recycle/orders" />
 <van-cell title="常用功能" />
 <van-grid clickable>
   <van-grid-item icon="todo-list-o" text="历史购买" url="/pages/goods/his" />
   <van-grid-item wx:if="{{canHX}}" icon="scan" text="扫码核销" bind:click="scanOrderCode" />
   <van-grid-item icon="paid" text="优惠买单" url="/pages/maidan/index" />
   <van-grid-item icon="balance-list-o" text="资金明细" url="/pages/asset/index" />
-  <van-grid-item wx:if="{{ invoice_open == 1 }}" icon="bill-o" text="申请发票" url="/pages/invoice/apply" />
-  <van-grid-item wx:if="{{ invoice_open == 1 }}" icon="bill-o" text="开票记录" url="/pages/invoice/list" />
   <van-grid-item icon="coupon-o" text="优惠券" url="/pages/coupons/index" link-type="switchTab" />
-  <van-grid-item wx:if="{{ show_score_sign == 1 }}" icon="calendar-o" text="签到赚积分" url="/pages/sign/index" />
 </van-grid>
-<van-cell-group wx:if="{{apiUserInfoMap.peisongMember && apiUserInfoMap.peisongMember.type != 0}}" title="配送员工作台">
-  <van-cell title="工作状态 ({{apiUserInfoMap.peisongMember.statusStr}})">
-    <view slot="">
-      <van-switch size="40rpx" checked="{{ memberChecked }}" bind:change="memberCheckedChange" />
-    </view>
-  </van-cell>
-  <van-cell title="我的配送单" is-link url="/pages/peisong/orders" />
-  <van-cell wx:if="{{apiUserInfoMap.peisongMember.type != 2}}" title="抢单任务大厅" is-link url="/pages/peisong/orders?status=-1" />
-  <van-cell wx:if="{{apiUserInfoMap.peisongMember && apiUserInfoMap.peisongMember.type == 2}}" title="管理员派单管理" is-link url="/pages/peisong/orders?status=1" />
-  <van-cell title="业绩统计" is-link url="/pages/peisong/statistics" />
-</van-cell-group>
-<van-cell wx:if="{{ fx_type == 'hehuoren' }}" title="分销中心" is-link url="/packageFx/pages/hehuorenfenxiao/index" />
-<van-cell-group wx:elif="{{ show_3_seller == 1 }}" title="三级分销">
-  <van-cell wx:if="{{!apiUserInfoMap.base.isSeller}}" title="成为分销商" is-link url="/packageFx/pages/apply/index" />
-  <van-cell wx:else title="分销中心" is-link url="/packageFx/pages/index/index" />
-  <van-cell wx:if="{{apiUserInfoMap.base.isSeller}}" title="我的团队" is-link url="/packageFx/pages/myusers/index" />
-  <van-cell wx:if="{{apiUserInfoMap.base.isSeller}}" title="推广订单" is-link url="/packageFx/pages/commisionLog/index" />
-</van-cell-group>
+
+
 <van-cell-group title="其他功能">
-  <van-cell wx:if="{{ show_quan_exchange_score == 1 }}" title="积分券兑换积分" is-link url="/pages/score-excharge/index" />
-  <van-cell wx:if="{{ show_score_exchange_growth == 1 }}" title="积分兑换成长值" is-link url="/pages/score-excharge/growth" />
   <van-cell title="帮助中心" is-link url="/pages/help/index" />
   <van-cell wx:if="{{ customerServiceType == 'QW' }}" title="联系客服" is-link bind:click="customerService" />
   <van-cell title="个人信息" is-link url="/pages/my/info-menu" />

@@ -30,7 +30,7 @@ Page({
 	},
   onShow() {
     AUTH.checkHasLogined().then(isLogined => {
-      debugger
+      console.log("isLogined:"+isLogined)
       if (isLogined) {
         this.getUserApiInfo();
         this.getUserAmount();
@@ -51,11 +51,7 @@ Page({
   readConfigVal() {
     this.setData({
       order_hx_uids: wx.getStorageSync('order_hx_uids'),
-      cps_open: wx.getStorageSync('cps_open'),
-      recycle_open: wx.getStorageSync('recycle_open'),
       show_3_seller: wx.getStorageSync('show_3_seller'),
-      show_quan_exchange_score: wx.getStorageSync('show_quan_exchange_score'),
-      show_score_exchange_growth: wx.getStorageSync('show_score_exchange_growth'),
       show_score_sign: wx.getStorageSync('show_score_sign'),
       fx_type: wx.getStorageSync('fx_type'),
       invoice_open: wx.getStorageSync('invoice_open'),
@@ -71,28 +67,10 @@ Page({
         _data.userMobile = res.data.base.mobile
       }
       _data.nick = res.data.base.nick
-      if (this.data.order_hx_uids && this.data.order_hx_uids.indexOf(res.data.base.id) != -1) {
-        _data.canHX = true // 具有扫码核销的权限
-      }
-      if (res.data.peisongMember && res.data.peisongMember.status == 1) {
-        _data.memberChecked = false
-      } else {
-        _data.memberChecked = true
-      }
       this.setData(_data);
     }
   },
-  async memberCheckedChange() {
-    const res = await WXAPI.peisongMemberChangeWorkStatus(wx.getStorageSync('token'))
-    if (res.code != 0) {
-      wx.showToast({
-        title: res.msg,
-        icon: 'none'
-      })
-    } else {
-      this.getUserApiInfo()
-    }
-  },
+  
   getUserAmount: function () {
     var that = this;
     WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {

@@ -135,7 +135,6 @@
         "selectedIconPath": "images/nav/fl-on.png",
         "text": "分类"
       },
-
       {
         "pagePath": "pages/shop-cart/index",
         "iconPath": "images/nav/cart-off.png",

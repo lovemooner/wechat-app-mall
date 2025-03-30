@@ -62,6 +62,10 @@ module.exports = {
       token: token
     });
   },
-  // token: wx.getStorageSync('token'),
+  goodsAddition: function goodsAddition(goodsId) {
+    return request('/shop/goods/goodsAddition', true, 'get', {
+      goodsId: goodsId
+    });``
+  },
 
 }

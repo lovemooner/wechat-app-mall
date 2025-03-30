@@ -20,7 +20,7 @@ Page({
         cmsPageDetail: res.data
       })
       wx.setNavigationBarTitle({
-        title: res.data.info.title,
+        title: '关于我们',
       })
     }
   },

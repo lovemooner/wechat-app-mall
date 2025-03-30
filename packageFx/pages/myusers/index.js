@@ -1,101 +1,66 @@
-const WXAPI = require('apifm-wxapi')
-
+// packageFx/pages/myusers/index.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    number1: 0, // 直推用户数
-    number2: 0, // 间推用户数
-    activeIndex: 0, // tab点亮索引
-    page: 1 // 读取第几页
-  },
-
-  onLoad: function () {
-    this.fxMembersStatistics()
-    this.fxMembers()
-  },
-  onShow: function () {
 
   },
-  async fxMembersStatistics() {
-    const res = await WXAPI.fxMembersStatistics(wx.getStorageSync('token'))
-    if (res.code == 0) {
-      this.setData({
-        number1: res.data.totleFansLevel1,
-        number2: res.data.totleFansLevel2
-      })
-    }
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+
   },
-  async fxMembers() {
-    const res = await WXAPI.fxMembers({
-      token: wx.getStorageSync('token'),
-      page: this.data.page,
-      level: this.data.activeIndex == 0 ? 1 : 2
-    })
-    if (res.code == 700) {
-      if (this.data.page == 1) {
-        this.setData({
-          members: []
-        })
-      } else {
-        wx.showToast({
-          title: '没有更多了',
-          icon: 'none'
-        })
-      }
-    }
-    if (res.code == 0) {
-      const statisticsCommisionMap = res.data.statisticsCommisionMap
-      const userCashMap = res.data.userCashMap
-      res.data.result.forEach(ele => {
-        if (!ele.avatarUrls) {
-          ele.avatarUrls = '/images/default.png'
-        }
-        if (!ele.nicks) {
-          ele.nicks = '用户' + ele.uids
-        }
-        const _statisticsCommisionMap = statisticsCommisionMap[ele.uids]
-        if (_statisticsCommisionMap) {
-          ele.saleroom = _statisticsCommisionMap.saleroom
-          ele.numberOrder = _statisticsCommisionMap.numberOrder
-        }
-        if (userCashMap) {
-          const _userCashMap = userCashMap[ele.uids]
-          if (_userCashMap) {
-            ele.totleConsumed = _userCashMap.totleConsumed
-            ele.totalPayNumber = _userCashMap.totalPayNumber
-            ele.totalPayAmount = _userCashMap.totalPayAmount
-          }
-        }
-      })
-      if (this.data.page == 1) {
-        this.setData({
-          members: res.data.result
-        })
-      } else {
-        this.setData({
-          members: this.data.members.concat(res.data.result)
-        })
-      }
-    }
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
   },
-  tabChange(e) {
-    this.setData({
-      activeIndex: e.detail.index,
-      page: 1
-    })
-    this.fxMembers()
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
   },
-  onReachBottom: function() {
-    this.data.page += 1
-    this.fxMembers()
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
   },
-  onPullDownRefresh: function() {
-    this.data.page = 1
-    this.fxMembersStatistics()
-    this.fxMembers()
-    wx.stopPullDownRefresh()
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
   },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
+  }
 })

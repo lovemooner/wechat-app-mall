@@ -1,74 +1,66 @@
-const WXAPI = require('apifm-wxapi')
-const dayjs = require("dayjs")
+// pages/peisong/statistics.js
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    active: 0,
-    tabs: ['本月', '今天', '昨天'],
-    page: 1,
-    month: undefined,
-    today: undefined,
-    yesday: undefined,
+
   },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
   onLoad(options) {
-    this.setData({
-      month: dayjs().format('YYYYMM'),
-      today: dayjs().format('YYYYMMDD'),
-      yesday: dayjs().add(-1, 'day').format('YYYYMMDD'),
-    })
-    this.peisongMemberStatistics()
+
   },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
   onShow() {
 
   },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
   onReachBottom() {
-    this.data.page++
-    this.peisongMemberStatistics()
+
   },
-  tabClick(e) {
-    this.data.page = 1
-    this.setData({
-      active: e.detail.index
-    })
-    this.peisongMemberStatistics()
-  },
-  async peisongMemberStatistics() {
-    wx.showLoading({
-      title: ''
-    })
-    const data = {
-      token: wx.getStorageSync('token'),
-      page: this.data.page,
-    }
-    if (this.data.active == 0) {
-      data.day = this.data.month
-    } else if (this.data.active == 1) {
-      data.day = this.data.today
-    } else if (this.data.active == 2) {
-      data.day = this.data.yesday
-    }
-    const res = await WXAPI.peisongMemberStatistics(data)
-    wx.hideLoading()
-    if (res.code == 0) {
-      if (this.data.page == 1) {
-        this.setData({
-          list: res.data.result
-        })
-      } else {
-        this.setData({
-          list: this.data.list.concat(res.data.result)
-        })
-      }
-    } else {
-      if (this.data.page > 1) {
-        wx.showToast({
-          title: '没有更多了~',
-          icon: 'none'
-        })
-      } else {
-        this.setData({
-          list: null
-        })
-      }
-    }
-  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
+  }
 })

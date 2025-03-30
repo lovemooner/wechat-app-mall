@@ -43,7 +43,6 @@ async function checkHasLogined() {
     return false
   }
   const checkTokenRes = await LZH.checkToken(token)
-  debugger
   if (checkTokenRes.code != 0) {
     wx.removeStorageSync('token')
     return false
@@ -220,10 +219,7 @@ async function login20241025() {
   //   return res
   // } else {
     // 非服务商模式
-    console.log("非服务商模式")
     const res = await LZH.login_wx(code)
-    console.log("res "+res)
-    debugger
     if (res.code == 10000) {
       // 去注册
       return res;

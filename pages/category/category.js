@@ -215,7 +215,6 @@ Page({
   },
 
   async addShopCar(e) {
-    debugger
     const curGood = this.data.currentGoods.find(ele => {
       return ele.id == e.currentTarget.dataset.id
     })
@@ -239,6 +238,7 @@ Page({
       })
       return
     }
+    debugger
     if (!curGood.propertyIds && !curGood.hasAddition) {
       // 直接调用加入购物车方法
       const res = await WXAPI.shippingCarInfoAddItem(wx.getStorageSync('token'), curGood.id, 1, [])

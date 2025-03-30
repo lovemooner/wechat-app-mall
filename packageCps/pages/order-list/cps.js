@@ -1,75 +1,66 @@
-const WXAPI = require('apifm-wxapi')
-
+// packageCps/pages/order-list/cps.js
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    tabIndex: 0,
-    page: 1
+
   },
-  onLoad(e) {
-    this.cpsJdOrders()
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+
   },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
   onShow() {
 
   },
-  tabChange(e) {
-    this.setData({
-      page: 1,
-      tabIndex: e.detail.index
-    })
-    if (e.detail.index == 0) {
-      this.cpsJdOrders()
-    }
-    if (e.detail.index == 1) {
-      this.cpsPddOrders()
-    }
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
   },
-  async cpsJdOrders() {
-    wx.showLoading({
-      title: '',
-    })
-    const res = await WXAPI.cpsJdOrders({
-      token: wx.getStorageSync('token')
-    })
-    wx.hideLoading()
-    if (res.code == 0) {
-      this.setData({
-        list: res.data.result
-      })
-    }
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
   },
-  async cpsPddOrders() {
-    wx.showLoading({
-      title: '',
-    })
-    const res = await WXAPI.cpsPddOrders({
-      token: wx.getStorageSync('token')
-    })
-    wx.hideLoading()
-    if (res.code == 0) {
-      this.setData({
-        list: res.data.result
-      })
-    }
-  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
   onPullDownRefresh() {
-    this.setData({
-      page: 1
-    })
-    if (this.data.tabIndex == 0) {
-      this.cpsJdOrders()
-    }
-    if (this.data.tabIndex == 1) {
-      this.cpsPddOrders()
-    }
-    wx.stopPullDownRefresh()
+
   },
-  huishou(e) {
-    console.log(e);
-    const type = e.currentTarget.dataset.type
-    const orderId = e.currentTarget.dataset.orderid
-    const platform = e.currentTarget.dataset.platform
-    wx.navigateTo({
-      url: `/pages/recycle/index?type=${type}&orderId=${orderId}&platform=${platform}`,
-    })
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
 })
