@@ -1,8 +1,10 @@
 const WXAPI = require('apifm-wxapi')
 const TOOLS = require('../../utils/tools.js')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh.js')
 
 const app = getApp()
+
 
 Page({
   data: {
@@ -10,6 +12,7 @@ Page({
     saveHidden: true,
     allSelect: true,
     delBtnWidth: 120, //删除按钮宽度单位（rpx）
+    price: 10
   },
 
   //获取元素自适应后的实际宽度
@@ -40,27 +43,21 @@ Page({
     })
   },
   onShow: function () {
-    this.shippingCarInfo()
+    this.shoppingCarInfo()
   },
-  async shippingCarInfo() {
+  async shoppingCarInfo() {
     const token = wx.getStorageSync('token')
     if (!token) {
       return
     }
-    if (this.data.shopCarType == 0) { //自营购物车
-      var res = await WXAPI.shippingCarInfo(token)
-    } else if (this.data.shopCarType == 1) { //云货架购物车
-      var res = await WXAPI.jdvopCartInfoV2(token)
-    }
+    
+    var res = await LZH.shoppingCarInfo()
     if (res.code == 0) {
-      if (this.data.shopCarType == 0) //自营商品
-      {
         res.data.items.forEach(ele => {
           if (!ele.stores || ele.status == 1) {
             ele.selected = false
           }
         })
-      }
       this.setData({
         shippingCarInfo: res.data
       })
@@ -84,6 +81,7 @@ Page({
     }
   },
   touchM: function (e) {
+    debugger
     const index = e.currentTarget.dataset.index;
     if (e.touches.length == 1) {
       var moveX = e.touches[0].clientX;
@@ -137,7 +135,7 @@ Page({
         icon: 'none'
       })
     } else {
-      this.shippingCarInfo()
+      this.shoppingCarInfo()
       TOOLS.showTabBarBadge()
     }
   },
@@ -147,20 +145,19 @@ Page({
     const number = item.number + 1
     const token = wx.getStorageSync('token')
     if(this.data.shopCarType == 0){
-      var res = await WXAPI.shippingCarInfoModifyNumber(token, item.key, number)
+      var res = await LZH.shoppingCarInfoModifyNumber(item.id, number)
     }
     else if(this.data.shopCarType == 1){
       var res = await WXAPI.jdvopCartModifyNumberV2(token, item.key, number)
     }    
-    this.shippingCarInfo()
+    this.shoppingCarInfo()
   },
   async jianBtnTap(e) {
     const index = e.currentTarget.dataset.index;
     const item = this.data.shippingCarInfo.items[index]
     const number = item.number - 1
     if (number <= 0) {
-      // 弹出删除确认
-      wx.showModal({
+      wx.showModal({ // 弹出删除确认
         content: '确定要删除该商品吗？',
         success: (res) => {
           if (res.confirm) {
@@ -170,50 +167,32 @@ Page({
       })
       return
     }
-    const token = wx.getStorageSync('token')
-    if(this.data.shopCarType == 0)
-    {
-      var res = await WXAPI.shippingCarInfoModifyNumber(token, item.key, number)  
-    }
-    if(this.data.shopCarType == 1)
-    {
-      var res = await WXAPI.jdvopCartModifyNumberV2(token, item.key, number)  
-    }
-    this.shippingCarInfo()
+    await LZH.shoppingCarInfoModifyNumber(item.id, number)  
+    this.shoppingCarInfo()
   },
   changeCarNumber(e) {
     const key = e.currentTarget.dataset.key
     const num = e.detail.value
     const token = wx.getStorageSync('token')
-    if(this.data.shopCarType == 0){
-    WXAPI.shippingCarInfoModifyNumber(token, key, num).then(res => {
-      this.shippingCarInfo()
-    })}
-    else if(this.data.shopCarType == 1){
-      WXAPI.jdvopCartModifyNumberV2(token, key, num).then(res => {
-        this.shippingCarInfo()
-      })
-    }
+    LZH.shoppingCarInfoModifyNumber(token, key, num).then(res => {
+      this.shoppingCarInfo()
+    })
   },
   async radioClick(e) {
     var index = e.currentTarget.dataset.index;
     var item = this.data.shippingCarInfo.items[index]
     const token = wx.getStorageSync('token')
-    if (this.data.shopCarType == 0) { //自营购物车
-      if (!item.stores || item.status == 1) {
+    if (!item.stores || item.status == 1) {
         return
-      }
-      var res = await WXAPI.shippingCartSelected(token, item.key, !item.selected)
-    } else if (this.data.shopCarType == 1) { //云货架购物车
-      var res = await WXAPI.jdvopCartSelectV2(token, item.key, !item.selected)
     }
-    this.shippingCarInfo()
+    var res = await LZH.shoppingCartSelected(item.id, !item.selected)
+    this.shoppingCarInfo()
   },
   onChange(event) {
     this.setData({
       shopCarType: event.detail.name
     })
-    this.shippingCarInfo()
+    this.shoppingCarInfo()
   },
   goDetail(e) {
     const item = e.currentTarget.dataset.item

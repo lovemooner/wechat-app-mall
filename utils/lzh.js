@@ -4,7 +4,8 @@ var request = function request(url, method, data) {
     _url = url;
   }
   var header = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'token': wx.getStorageSync('token')
   };
   return new Promise(function (resolve, reject) {
     wx.request({
@@ -67,5 +68,41 @@ module.exports = {
       goodsId: goodsId
     });``
   },
+
+  shoppingCarInfoAddItem: function shoppingCarInfoAddItem(token, goodsId, number, sku, addition) {
+    var type = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
+
+    return request('/shopping-cart/add', 'post', {
+      goodsId: goodsId,
+      number: number,
+      sku: sku && sku.length > 0 ? JSON.stringify(sku) : '',
+      addition: addition && addition.length > 0 ? JSON.stringify(addition) : '',
+      type: type
+    });
+  },
+
+  shoppingCarInfo: function shoppingCarInfo() {
+    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    return request('/shopping-cart/info', 'get', {
+      type: type
+    });
+  },
+
+  shoppingCartSelected: function shoppingCartSelected(id, selected) {
+    var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+    return request('/shopping-cart/select', 'post', {
+      id: id,
+      selected: selected, 
+      type: type
+    });
+  },
+
+  shoppingCarInfoModifyNumber: function shoppingCarInfoModifyNumber(id, number) {
+    var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+    return request('/shopping-cart/modifyNumber', 'post', {
+      id: id, number: number, type: type
+    });
+  },
+
 
 }

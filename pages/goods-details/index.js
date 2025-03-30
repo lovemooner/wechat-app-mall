@@ -519,6 +519,7 @@ Page({
    * 加入购物车
    */
   async addShopCar() {
+    debugger
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
       if (!this.data.canSubmit) {
         wx.showToast({
@@ -734,7 +735,7 @@ Page({
     var buyNowInfo = {};
     buyNowInfo.shopNum = 0;
     buyNowInfo.shopList = [];
-
+    debugger
     buyNowInfo.shopList.push(shopCarMap);
     buyNowInfo.kjId = this.data.kjId;
     if (this.data.shopSubdetail) {

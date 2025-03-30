@@ -1,4 +1,5 @@
 const WXAPI = require('apifm-wxapi')
+const LZH = require('./lzh')
 
 // 显示购物车tabBar的Badge
 async function showTabBarBadge(noTabBarPage){
@@ -8,7 +9,7 @@ async function showTabBarBadge(noTabBarPage){
   }
   let number = 0
   // 自营商品
-  let res = await WXAPI.shippingCarInfo(token)
+  let res = await LZH.shoppingCarInfo()
   if (res.code == 0) {
     number += res.data.number
   }
@@ -24,12 +25,12 @@ async function showTabBarBadge(noTabBarPage){
     if (number == 0) {
       // 删除红点点
       wx.removeTabBarBadge({
-        index: 3
+        index: 2
       })
     } else {
       // 显示红点点
       wx.setTabBarBadge({
-        index: 3,
+        index: 2,
         text: number + ''
       })
     }

@@ -1,6 +1,7 @@
 const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
-const AUTH = require('../../utils/auth')
+const AUTH = require('../../utils/auth');
+const LZH = require('../../utils/lzh.js');
 
 Date.prototype.format = function(format) {
   var date = {
@@ -84,6 +85,7 @@ Page({
       return
     }
     this.doneShow()
+    
   },
   async doneShow() {
     let goodsList = []
@@ -98,18 +100,9 @@ Page({
       }
     } else {
       //购物车下单
-      if (this.data.shopCarType == 0) {//自营购物车
-        var res = await WXAPI.shippingCarInfo(token)
-        shopList = res.data.shopList
-      } else if (this.data.shopCarType == 1) {//云货架购物车
-        var res = await WXAPI.jdvopCartInfoV2(token)
-        shopList = [{
-          id: 0,
-          name: '其他',
-          hasNoCoupons: true,
-          serviceDistance: 99999999
-        }]
-      }
+   
+      var res = await LZH.shoppingCarInfo(token)
+      shopList = res.data.shopList
       if (res.code == 0) {
         goodsList = res.data.items.filter(ele => {
           return ele.selected

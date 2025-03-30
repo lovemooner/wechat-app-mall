@@ -33,16 +33,12 @@ Page({
       console.log("isLogined:"+isLogined)
       if (isLogined) {
         this.getUserApiInfo();
-        this.getUserAmount();
         this.orderStatistics();
-        this.cardMyList();
         TOOLS.showTabBarBadge();
       } else {
         getApp().loginOK = () => {
           this.getUserApiInfo();
-          this.getUserAmount();
           this.orderStatistics();
-          this.cardMyList();
           TOOLS.showTabBarBadge();
         }
       }
@@ -54,7 +50,6 @@ Page({
       show_3_seller: wx.getStorageSync('show_3_seller'),
       show_score_sign: wx.getStorageSync('show_score_sign'),
       fx_type: wx.getStorageSync('fx_type'),
-      invoice_open: wx.getStorageSync('invoice_open'),
       customerServiceType: CONFIG.customerServiceType
     })
   },
@@ -71,19 +66,6 @@ Page({
     }
   },
   
-  getUserAmount: function () {
-    var that = this;
-    WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
-      if (res.code == 0) {
-        that.setData({
-          balance: res.data.balance.toFixed(2),
-          freeze: res.data.freeze.toFixed(2),
-          score: res.data.score,
-          growth: res.data.growth
-        });
-      }
-    })
-  },
   handleOrderCount: function (count) {
     return count > 99 ? '99+' : count;
   },
@@ -148,17 +130,7 @@ Page({
       url: '/pages/score/growth',
     })
   },
-  async cardMyList() {
-    const res = await WXAPI.cardMyList(wx.getStorageSync('token'))
-    if (res.code == 0) {
-      const myCards = res.data.filter(ele => { return ele.status == 0 })
-      if (myCards.length > 0) {
-        this.setData({
-          myCards: res.data
-        })
-      }
-    }
-  },
+  
   editNick() {
     this.setData({
       nickShow: true

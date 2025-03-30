@@ -39,18 +39,7 @@ Page({
       icon: 'success'
     })
   },
-  setEnableDebug() {
-    const enableDebug = wx.getSystemInfoSync().enableDebug
-    if (enableDebug) {
-      wx.setEnableDebug({
-        enableDebug: false
-      })
-    } else {
-      wx.setEnableDebug({
-        enableDebug: true
-      })
-    }
-  },
+  
   openSetting() {
     wx.openSetting({
       withSubscriptions: true

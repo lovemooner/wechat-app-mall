@@ -238,10 +238,10 @@ Page({
       })
       return
     }
-    debugger
+    
     if (!curGood.propertyIds && !curGood.hasAddition) {
       // 直接调用加入购物车方法
-      const res = await WXAPI.shippingCarInfoAddItem(wx.getStorageSync('token'), curGood.id, 1, [])
+      const res = await LZH.shoppingCarInfoAddItem(curGood.id, 1, [])
       if (res.code == 2000) {
         wx.navigateTo({
           url: '/pages/login/index',
@@ -259,6 +259,7 @@ Page({
           icon: 'success'
         })
         wx.showTabBar()
+        debugger 
         TOOLS.showTabBarBadge() // 获取购物车数据，显示TabBarBadge
       } else {
         wx.showToast({

@@ -38,7 +38,6 @@
   <van-grid-item icon="coupon-o" text="优惠券" url="/pages/coupons/index" link-type="switchTab" />
 </van-grid>
 
-
 <van-cell-group title="其他功能">
   <van-cell title="帮助中心" is-link url="/pages/help/index" />
   <van-cell wx:if="{{ customerServiceType == 'QW' }}" title="联系客服" is-link bind:click="customerService" />
