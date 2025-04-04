@@ -5,6 +5,7 @@ const WXAPI = require('apifm-wxapi')
  * data: 扩展数据对象，用于保存参数
  */
 function wxpay(type, money, orderId, redirectUrl, data, content) {
+  debugger
   const postData = {
     token: wx.getStorageSync('token'),
     money: money,

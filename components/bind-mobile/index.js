@@ -38,6 +38,7 @@ Component({
       this.triggerEvent('cancel')
     },
     async getPhoneNumber(e) {
+      debugger
       if (e.detail.errMsg.indexOf('privacy permission is not authorized') != -1) {
         wx.showModal({
           content: '请阅读并同意隐私条款以后才能继续本操作',

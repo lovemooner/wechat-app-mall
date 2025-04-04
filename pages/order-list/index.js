@@ -1,4 +1,5 @@
 const WXAPI = require('apifm-wxapi')
+const LZH = require('../../utils/lzh.js')
 
 Page({
   data: {
@@ -84,7 +85,7 @@ Page({
     const orderId = e.currentTarget.dataset.id;
     let money = e.currentTarget.dataset.money;
     const needScore = e.currentTarget.dataset.score;
-    WXAPI.userAmount(wx.getStorageSync('token')).then(function(res) {
+    LZH.userAmount().then(function(res) {
       if (res.code == 0) {
         const order_pay_user_balance = wx.getStorageSync('order_pay_user_balance')
         if (order_pay_user_balance != '1') {
@@ -244,9 +245,8 @@ Page({
       title: '',
     })
     var postData = {
-      page: this.data.page,
-      pageSize: 20,
-      token: wx.getStorageSync('token')
+      current: this.data.page,
+      size: 20
     };
     if (this.data.hasRefund) {
       postData.hasRefund = true
@@ -257,7 +257,7 @@ Page({
     if (postData.status == 9999) {
       postData.status = ''
     }
-    const res = await WXAPI.orderList(postData)
+    const res =await LZH.orderList(postData)
     wx.hideLoading()
     if (res.code == 0) {
       if (this.data.page == 1) {

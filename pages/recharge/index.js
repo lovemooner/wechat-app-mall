@@ -1,5 +1,6 @@
 const WXAPI = require('apifm-wxapi')
 const CONFIG = require('../../config.js')
+const LZH = require('../../utils/lzh.js')
 Page({
   data: {
 
@@ -32,7 +33,7 @@ Page({
     // 判断是否需要绑定手机号码
     // https://www.yuque.com/apifm/nu0f75/zgf8pu
     if (CONFIG.needBindMobile) {
-      const resUserDetail = await WXAPI.userDetail(wx.getStorageSync('token'))
+      const resUserDetail = await LZH.userDetail()
       if (resUserDetail.code == 0 && !resUserDetail.data.base.mobile) {
         this.setData({
           bindMobileShow: true
@@ -68,7 +69,7 @@ Page({
     // 判断是否需要绑定手机号码
     // https://www.yuque.com/apifm/nu0f75/zgf8pu
     if (CONFIG.needBindMobile) {
-      const resUserDetail = await WXAPI.userDetail(wx.getStorageSync('token'))
+      const resUserDetail = await LZH.userDetail()
       if (resUserDetail.code == 0 && !resUserDetail.data.base.mobile) {
         this.setData({
           bindMobileShow: true

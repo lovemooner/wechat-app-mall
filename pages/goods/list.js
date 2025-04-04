@@ -1,5 +1,7 @@
 const WXAPI = require('apifm-wxapi')
 const TOOLS = require('../../utils/tools.js') // TOOLS.showTabBarBadge();
+const LZH = require('../../utils/lzh')
+
 Page({
 
   /**
@@ -57,7 +59,7 @@ Page({
     if (this.data.categoryId) {
       _data.categoryId = this.data.categoryId
     }
-    const res = await WXAPI.goodsv2(_data)
+    const res = await LZH.goodsv2(_data)
     wx.hideLoading()
     if (res.code == 0) {
       if (this.data.page == 1) {

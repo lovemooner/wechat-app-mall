@@ -1,6 +1,7 @@
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const CONFIG = require('../../config.js')
+const LZH = require('../../utils/lzh')
 Page({
   data: {
     payType: 'wxpay'
@@ -29,7 +30,7 @@ Page({
     }
   },
   async userAmount() {
-    const res = await WXAPI.userAmount(wx.getStorageSync('token'))
+    const res = await LZH.userAmount()
     if (res.code === 0) {
       this.setData({
         balance: res.data.balance
@@ -57,7 +58,7 @@ Page({
     // 判断是否需要绑定手机号码
     // https://www.yuque.com/apifm/nu0f75/zgf8pu
     if (CONFIG.needBindMobile) {
-      const resUserDetail = await WXAPI.userDetail(wx.getStorageSync('token'))
+      const resUserDetail = await LZH.userDetail()
       if (resUserDetail.code == 0 && !resUserDetail.data.base.mobile) {
         this.setData({
           bindMobileShow: true

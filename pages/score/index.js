@@ -1,6 +1,7 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh')
 
 Page({
 
@@ -34,7 +35,7 @@ Page({
   initData() {
     const _this = this
     const token = wx.getStorageSync('token')
-    WXAPI.userAmount(token).then(function (res) {
+    LZH.userAmount().then(function (res) {
       if (res.code == 0) {
         _this.setData({
           balance: res.data.balance.toFixed(2),

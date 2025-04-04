@@ -48,19 +48,7 @@ Page({
     }
   },
   onLoad(e) {
-    // e.id = 122843
-    // 读取分享链接中的邀请人编号
-    if (e && e.inviter_id) {
-      wx.setStorageSync('referrer', e.inviter_id)
-    }
-    // 读取小程序码中的邀请人编号
-    if (e && e.scene) {
-      const scene = decodeURIComponent(e.scene) // 处理扫码进商品详情页面的逻辑
-      if (scene && scene.split(',').length >= 2) {
-        e.id = scene.split(',')[0]
-        wx.setStorageSync('referrer', scene.split(',')[1])
-      }
-    }
+    debugger
     this.data.goodsId = e.id
     this.data.kjJoinUid = e.kjJoinUid
     let goodsDetailSkuShowType = wx.getStorageSync('goodsDetailSkuShowType')
@@ -151,6 +139,7 @@ Page({
 
     AUTH.checkHasLogined().then(isLogined => {
       if (isLogined) {
+        debugger
         this.goodsFavCheck()
       }
     })
@@ -735,7 +724,6 @@ Page({
     var buyNowInfo = {};
     buyNowInfo.shopNum = 0;
     buyNowInfo.shopList = [];
-    debugger
     buyNowInfo.shopList.push(shopCarMap);
     buyNowInfo.kjId = this.data.kjId;
     if (this.data.shopSubdetail) {

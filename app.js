@@ -168,7 +168,7 @@ App({
     })
   },
   async getUserApiInfo() {
-    const res = await LZH.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail()
     if (res.code == 0) {
       this.globalData.apiUserInfoMap = res.data
     }

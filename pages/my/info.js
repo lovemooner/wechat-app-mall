@@ -1,5 +1,7 @@
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh.js')
+
 Page({
   data: {
     avatarUrl: undefined,
@@ -31,7 +33,7 @@ Page({
     })
   },
   async getUserApiInfo() {
-    const res = await WXAPI.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail()
     if (res.code == 0) {
       let _data = {}
       _data.apiUserInfoMap = res.data
@@ -67,7 +69,7 @@ Page({
     }
     postData.extJsonStr = JSON.stringify(e.detail.value)
     console.log(postData);
-    const res = await WXAPI.modifyUserInfo(postData)
+    const res = await LZH.modifyUserInfo(postData)
     if (res.code != 0) {
       wx.showToast({
         title: res.msg,

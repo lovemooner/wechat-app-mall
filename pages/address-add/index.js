@@ -1,5 +1,6 @@
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh')
 var address_parse = require("../../utils/address_parse")
 Page({
   data: {
@@ -11,7 +12,7 @@ Page({
     aIndex: 0,//选择的区下标
   },
   async provinces(provinceId, cityId, districtId, streetId) {
-    const res = await WXAPI.provinceV2()
+    const res = await LZH.provinceV2()
     if (res.code == 0) {
       const provinces = [{
         id: 0,
@@ -48,7 +49,7 @@ Page({
       })
       return
     }
-    const res = await WXAPI.nextRegionV2(pid);
+    const res = await LZH.nextRegionV2(pid);
     if (res.code == 0) {
       const cities = [{
         id: 0,
@@ -83,7 +84,7 @@ Page({
       })
       return
     }
-    const res = await WXAPI.nextRegionV2(pid);
+    const res = await LZH.nextRegionV2(pid);
     if (res.code == 0) {
       const areas = [{
         id: 0,
@@ -123,7 +124,7 @@ Page({
       })
       return
     }
-    const res = await WXAPI.nextRegionV2(pid);
+    const res = await LZH.nextRegionV2(pid);
     if (res.code == 0) {
       const streets = [{
         id: 0,
@@ -253,9 +254,9 @@ Page({
     let apiResult
     if (this.data.id) {
       postData.id = this.data.id
-      apiResult = await WXAPI.updateAddress(postData)
+      apiResult = await LZH.updateAddress(postData)
     } else {
-      apiResult = await WXAPI.addAddress(postData)
+      apiResult = await LZH.addAddress(postData)
     }
     if (apiResult.code != 0) {
       // 登录错误 
@@ -273,7 +274,7 @@ Page({
     // this.initFromClipboard('广州市天河区天河东路6号粤电广场北塔2302，徐小姐，18588998859')
     const _this = this
     if (e.id) { // 修改初始化数据库数据
-      const res = await WXAPI.addressDetail(wx.getStorageSync('token'), e.id)
+      const res = await LZH.addressDetail(e.id)
       if (res.code == 0) {
         this.setData({
           id: e.id,
@@ -328,7 +329,7 @@ Page({
       content: '确定要删除该收货地址吗？',
       success: function (res) {
         if (res.confirm) {
-          WXAPI.deleteAddress(wx.getStorageSync('token'), id).then(function () {
+          LZH.deleteAddress(wx.getStorageSync('token'), id).then(function () {
             wx.navigateBack({})
           })
         } else {
@@ -367,6 +368,7 @@ Page({
           }
           that.provinceChange(e, 0, 0).then(() => {
             // 读取市
+            debugger
             let cIndex = that.data.cities.findIndex(ele => {
               return ele.name == cityName
             })

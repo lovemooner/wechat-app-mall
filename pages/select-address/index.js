@@ -1,15 +1,15 @@
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh')
 
 const app = getApp()
 Page({
   data: {
-
   },
   selectTap: function(e) {
     console.log(e);
     var id = e.currentTarget.dataset.id;
-    WXAPI.updateAddress({
+    LZH.updateAddress({
       token: wx.getStorageSync('token'),
       id: id,
       isDefault: 'true'
@@ -37,15 +37,15 @@ Page({
   onShow: function() {
     AUTH.checkHasLogined().then(isLogined => {
       if (isLogined) {
-        this.initShippingAddress();
+        this.initAddress();
       }
     })
   },
-  async initShippingAddress() {
+  async initAddress() {
     wx.showLoading({
       title: '',
     })
-    const res = await WXAPI.queryAddress(wx.getStorageSync('token'))
+    const res = await LZH.queryAddress()
     wx.hideLoading({
       success: (res) => {},
     })
@@ -65,7 +65,7 @@ Page({
     }
   },
   onPullDownRefresh() {
-    this.initShippingAddress()
+    this.initAddress()
     wx.stopPullDownRefresh()
   },
 })

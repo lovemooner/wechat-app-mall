@@ -1,6 +1,7 @@
 const app = getApp();
 const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
+const LZH = require('../../utils/lzh.js')
 
 Page({
     data:{
@@ -17,7 +18,7 @@ Page({
     },
     onShow : function () {
       var that = this;
-      WXAPI.orderDetail(wx.getStorageSync('token'), that.data.orderId).then(function (res) {
+      LZH.orderDetail(that.data.orderId).then(function (res) {
         if (res.code != 0) {
           wx.showModal({
             title: '错误',
@@ -114,7 +115,7 @@ Page({
           reputations_json.pics = []
           for (let index = 0; index < this.data.picsList[i].length; index++) {
             const pic = this.data.picsList[i][index];
-            const res = await WXAPI.uploadFileV2(wx.getStorageSync('token'), pic.url)
+            const res = await LZH.uploadFileV2(pic.url)
             if (res.code == 0) {
               reputations_json.pics.push(res.data.url)
             }

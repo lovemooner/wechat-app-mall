@@ -1,5 +1,6 @@
 const WXAPI = require('apifm-wxapi')
 import wxbarcode from 'wxbarcode'
+const LZH = require('../../utils/lzh')
 
 Page({
   data: {
@@ -16,7 +17,7 @@ Page({
   onShow: function () {
   },
   async getUserAmount() {
-    const res = await WXAPI.userAmount(wx.getStorageSync('token'))
+    const res = await LZH.userAmount(wx.getStorageSync('token'))
     if (res.code == 0) {
       this.setData({
         balance: res.data.balance,

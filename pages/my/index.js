@@ -54,7 +54,7 @@ Page({
     })
   },
   async getUserApiInfo() {
-    const res = await LZH.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail()
     if (res.code == 0) {
       let _data = {}
       _data.apiUserInfoMap = res.data
@@ -148,7 +148,7 @@ Page({
       token: wx.getStorageSync('token'),
       nick: this.data.nick,
     }
-    const res = await WXAPI.modifyUserInfo(postData)
+    const res = await LZH.modifyUserInfo(postData)
     if (res.code != 0) {
       wx.showToast({
         title: res.msg,
@@ -164,7 +164,7 @@ Page({
   async onChooseAvatar(e) {
     console.log(e);
     const avatarUrl = e.detail.avatarUrl
-    let res = await WXAPI.uploadFileV2(wx.getStorageSync('token'), avatarUrl)
+    let res = await LZH.uploadFileV2(avatarUrl)
     if (res.code != 0) {
       wx.showToast({
         title: res.msg,

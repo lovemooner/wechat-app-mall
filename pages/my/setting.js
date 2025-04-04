@@ -1,6 +1,8 @@
 const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh.js')
+
 Page({
   data: {
     enableDebug: wx.getSystemInfoSync().enableDebug
@@ -14,7 +16,7 @@ Page({
     this.getUserApiInfo()
   },
   async getUserApiInfo() {
-    const res = await WXAPI.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail()
     if (res.code == 0) {
       let _data = {}
       _data.apiUserInfoMap = res.data

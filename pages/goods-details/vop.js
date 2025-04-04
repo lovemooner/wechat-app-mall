@@ -2,6 +2,8 @@ const WXAPI = require('apifm-wxapi')
 const TOOLS = require('../../utils/tools.js')
 const AUTH = require('../../utils/auth')
 const CONFIG = require('../../config.js')
+const LZH = require('../../utils/lzh.js');
+
 import Poster from 'wxa-plugin-canvas/poster/poster'
 
 Page({
@@ -96,7 +98,7 @@ Page({
     })
   },
   async initShippingAddress() {
-    const res = await WXAPI.defaultAddress(wx.getStorageSync('token'))
+    const res = await LZH.defaultAddress(wx.getStorageSync('token'))
     if (res.code == 0) {
       this.setData({
         curAddressData: res.data.info

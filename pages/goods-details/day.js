@@ -1,6 +1,6 @@
 const WXAPI = require('apifm-wxapi')
 const dayjs = require("dayjs")
-
+const LZH = require('../../utils/lzh.js');
 Page({
   data: {
     list: undefined,
@@ -55,7 +55,7 @@ Page({
       goodsJsonStr: JSON.stringify(goodsJsonStr),
     }
     // https://www.yuque.com/apifm/nu0f75/qx4w98
-    const res = await WXAPI.orderCreate(d)
+    const res = await LZH.orderCreate(d)
     if (res.code != 0) {
       wx.showModal({
         content: res.msg

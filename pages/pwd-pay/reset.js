@@ -1,5 +1,7 @@
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const LZH = require('../../utils/lzh.js')
+
 Page({
   data: {
 
@@ -11,7 +13,7 @@ Page({
     this.getUserApiInfo()
   },
   async getUserApiInfo() {
-    const res = await WXAPI.userDetail(wx.getStorageSync('token'))
+    const res = await LZH.userDetail()
     if (res.code == 2000) {
       AUTH.login(this)
       return

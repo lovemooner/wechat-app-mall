@@ -323,12 +323,7 @@ module.exports = {
   sendTempleMsg: function sendTempleMsg(data) {
     return request('/template-msg/put', true, 'post', data);
   },
-  payVariableUrl: function payVariableUrl(url, data) {
-    return request(url, true, 'post', data);
-  },
-  wxpay: function wxpay(data) {
-    return request('/pay/wx/wxapp', true, 'post', data);
-  },
+ 
   wxpayH5: function wxpayH5(data) {
     return request('/pay/wx/h5', true, 'post', data);
   },
@@ -745,37 +740,11 @@ module.exports = {
       id: id
     });
   },
-  addAddress: function addAddress(data) {
-    return request('/user/shipping-address/add', true, 'post', data);
-  },
-  updateAddress: function updateAddress(data) {
-    return request('/user/shipping-address/update', true, 'post', data);
-  },
-  deleteAddress: function deleteAddress(token, id) {
-    return request('/user/shipping-address/delete', true, 'post', {
-      id: id,
-      token: token
-    });
-  },
-  queryAddress: function queryAddress(token) {
-    return request('/user/shipping-address/list', true, 'get', {
-      token: token
-    });
-  },
+ 
   queryAddressV2: function queryAddressV2(data) {
     return request('/user/shipping-address/list/v2', true, 'post', data);
   },
-  defaultAddress: function defaultAddress(token) {
-    return request('/user/shipping-address/default/v2', true, 'get', {
-      token: token
-    });
-  },
-  addressDetail: function addressDetail(token, id) {
-    return request('/user/shipping-address/detail/v2', true, 'get', {
-      id: id,
-      token: token
-    });
-  },
+  
   pingtuanSet: function pingtuanSet(goodsId) {
     return request('/shop/goods/pingtuan/set', true, 'get', {
       goodsId: goodsId
@@ -887,11 +856,11 @@ module.exports = {
       token: token, mobile: mobile, code: code, pwd: pwd
     });
   },
-  userDetail: function userDetail(token) {
-    return request('/user/detail', true, 'get', {
-      token: token
-    });
-  },
+  // userDetail: function userDetail(token) {
+  //   return request('/user/detail', true, 'get', {
+  //     token: token
+  //   });
+  // },
   randomNick: function randomNick() {
     var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
@@ -914,14 +883,8 @@ module.exports = {
       token: token
     });
   },
-  userAmount: function userAmount(token) {
-    return request('/user/amount', true, 'get', {
-      token: token
-    });
-  },
-  orderCreate: function orderCreate(data) {
-    return request('/order/create', true, 'post', data);
-  },
+
+
   orderList: function orderList(data) {
     return request('/order/list', true, 'post', data);
   },
@@ -1057,21 +1020,21 @@ module.exports = {
   regionSearch: function regionSearch(data) {
     return request('/common/region/v2/search', false, 'post', data);
   },
-  provinceV2: () => {
-    return request('https://common.apifm.com/' + subDomain + '/region/province', false, 'get')
-  },
-  cityV2: () => {
-    return request('https://common.apifm.com/' + subDomain + '/region/city', false, 'get')
-  },
-  districtsV2: data => {
-    return request('https://common.apifm.com/' + subDomain + '/region/districts', false, 'post', data)
-  },
+  // provinceV2: () => {
+  //   return request('https://common.apifm.com/' + subDomain + '/region/province', false, 'get')
+  // },
+  // cityV2: () => {
+  //   return request('https://common.apifm.com/' + subDomain + '/region/city', false, 'get')
+  // },
+  // districtsV2: data => {
+  //   return request('https://common.apifm.com/' + subDomain + '/region/districts', false, 'post', data)
+  // },
   streetsV2: data => {
     return request('https://common.apifm.com/' + subDomain + '/region/streets', false, 'post', data)
   },
-  nextRegionV2: pid => {
-    return request('https://common.apifm.com/' + subDomain + '/region/child', false, 'get', { pid })
-  },
+  // nextRegionV2: pid => {
+  //   return request('https://common.apifm.com/' + subDomain + '/region/child', false, 'get', { pid })
+  // },
   regionInfoV2: id => {
     return request('https://common.apifm.com/' + subDomain + '/region/info', false, 'get', { id })
   },
@@ -1214,31 +1177,31 @@ module.exports = {
       });
     });
   },
-  uploadFileV2: function uploadFileV2(token, tempFilePath) {
-    var expireHours = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  // uploadFileV2: function uploadFileV2(token, tempFilePath) {
+  //   var expireHours = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
-    return new Promise(function (resolve, reject) {
-      wx.uploadFile({
-        url: 'https://oss.apifm.com/upload2',
-        filePath: tempFilePath,
-        name: 'upfile',
-        formData: {
-          token: token,
-          subDomain: subDomain,
-          expireHours: expireHours
-        },
-        success: function success(res) {
-          resolve(JSON.parse(res.data));
-        },
-        fail: function fail(error) {
-          reject(error);
-        },
-        complete: function complete(aaa) {
-          // 加载完成
-        }
-      });
-    });
-  },
+  //   return new Promise(function (resolve, reject) {
+  //     wx.uploadFile({
+  //       url: 'https://oss.apifm.com/upload2',
+  //       filePath: tempFilePath,
+  //       name: 'upfile',
+  //       formData: {
+  //         token: token,
+  //         subDomain: subDomain,
+  //         expireHours: expireHours
+  //       },
+  //       success: function success(res) {
+  //         resolve(JSON.parse(res.data));
+  //       },
+  //       fail: function fail(error) {
+  //         reject(error);
+  //       },
+  //       complete: function complete(aaa) {
+  //         // 加载完成
+  //       }
+  //     });
+  //   });
+  // },
   uploadFileFromUrl: function uploadFileFromUrl() {
     var remoteFileUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     var ext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
@@ -1798,13 +1761,13 @@ module.exports = {
   cmsArticleFavDeleteByNewsId: function cmsArticleFavDeleteByNewsId(token, newsId) {
     return request('/cms/news/fav/delete', true, 'post', { token: token, newsId: newsId });
   },
-  shippingCarInfo: function shippingCarInfo(token) {
-    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  // shippingCarInfo: function shippingCarInfo(token) {
+  //   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
-    return request('/shopping-cart/info', true, 'get', {
-      token: token, type: type
-    });
-  },
+  //   return request('/shopping-cart/info', true, 'get', {
+  //     token: token, type: type
+  //   });
+  // },
   shippingCarInfoAddItem: function shippingCarInfoAddItem(token, goodsId, number, sku, addition) {
     var type = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
 
@@ -1820,13 +1783,13 @@ module.exports = {
   shippingCarInfoAddItemV2: function shippingCarInfoAddItemV2(data) {
     return request('/shopping-cart/add', true, 'post', data);
   },
-  shippingCarInfoModifyNumber: function shippingCarInfoModifyNumber(token, key, number) {
-    var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+  // shippingCarInfoModifyNumber: function shippingCarInfoModifyNumber(token, key, number) {
+  //   var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
 
-    return request('/shopping-cart/modifyNumber', true, 'post', {
-      token: token, key: key, number: number, type: type
-    });
-  },
+  //   return request('/shopping-cart/modifyNumber', true, 'post', {
+  //     token: token, key: key, number: number, type: type
+  //   });
+  // },
   shippingCarInfoRemoveItem: function shippingCarInfoRemoveItem(token, key) {
     var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
@@ -2244,114 +2207,114 @@ module.exports = {
   jdvopCartAddV2: data => {
     return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/add`, false, 'post', data)
   },
-  jdvopCartModifyNumberV2: (token, key, number) => {
-    return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/modifyNumber`, false, 'post', {
-      token, key, number
-    })
-  },
-  jdvopCartSelectV2: (token, key, selected) => {
-    return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/select`, false, 'post', {
-      token, key, selected
-    })
-  },
-  jdvopCartRemoveV2: (token, key) => {
-    return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/remove`, false, 'post', {
-      token, key
-    })
-  },
-  jdvopCartEmptyV2: token => {
-    return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/empty`, false, 'post', {
-      token
-    })
-  },
-  jdvopCategory: pid => {
-    return request(`https://jdvop.apifm.com/jdvop/${merchantId}/category/list`, false, 'get', {
-      pid
-    })
-  },
-  jdvopCategory46: pid => {
-    return request(`https://jdvop.apifm.com/jdvop/46/category/list`, false, 'get', {
-      pid
-    })
-  },
-  // 商家从区管进货
-  jdvopJinhuoGoods: function jdvopJinhuoGoods(data) {
-    return request('/vop/goods/list', true, 'post', data);
-  },
-  jdvopJinhuoGoodsDetail: function jdvopJinhuoGoodsDetail(token, skuId) {
-    return request('/vop/goods/detail', true, 'get', { token: token, skuId: skuId });
-  },
+  // jdvopCartModifyNumberV2: (token, key, number) => {
+  //   return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/modifyNumber`, false, 'post', {
+  //     token, key, number
+  //   })
+  // },
+  // jdvopCartSelectV2: (token, key, selected) => {
+  //   return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/select`, false, 'post', {
+  //     token, key, selected
+  //   })
+  // },
+  // jdvopCartRemoveV2: (token, key) => {
+  //   return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/remove`, false, 'post', {
+  //     token, key
+  //   })
+  // },
+  // jdvopCartEmptyV2: token => {
+  //   return request(`https://jdvop.apifm.com/jdvop/${merchantId}/shopping-cart/empty`, false, 'post', {
+  //     token
+  //   })
+  // },
+  // jdvopCategory: pid => {
+  //   return request(`https://jdvop.apifm.com/jdvop/${merchantId}/category/list`, false, 'get', {
+  //     pid
+  //   })
+  // },
+  // jdvopCategory46: pid => {
+  //   return request(`https://jdvop.apifm.com/jdvop/46/category/list`, false, 'get', {
+  //     pid
+  //   })
+  // },
+  // // 商家从区管进货
+  // jdvopJinhuoGoods: function jdvopJinhuoGoods(data) {
+  //   return request('/vop/goods/list', true, 'post', data);
+  // },
+  // jdvopJinhuoGoodsDetail: function jdvopJinhuoGoodsDetail(token, skuId) {
+  //   return request('/vop/goods/detail', true, 'get', { token: token, skuId: skuId });
+  // },
   // cps
-  cpsJdGoodsCategory: function cpsJdGoodsCategory(parentId, grade) {
-    return request('/cpsJdGoods/category', true, 'get', { parentId: parentId, grade: grade });
-  },
-  cpsJdGoodsSearch: function cpsJdGoodsSearch(data) {
-    return request('/cpsJdGoods/search', true, 'post', data);
-  },
-  cpsJdGoodsDetail: function cpsJdGoodsDetail(data) {
-    return request('/cpsJdGoods/detail', true, 'get', data);
-  },
-  cpsJdGoodsSetExt: function cpsJdGoodsSetExt(data) {
-    return request('/cpsJdGoods/ext/set', true, 'post', data);
-  },
-  cpsJdGoodsQueryExt: function cpsJdGoodsQueryExt(skuId) {
-    return request('/cpsJdGoods/ext/query', true, 'get', { skuId: skuId });
-  },
-  cpsJdGoodsShotUrl: function cpsJdGoodsShotUrl(token, skuId) {
-    return request('/cpsJdGoods/shotUrl', true, 'get', { token: token, skuId: skuId });
-  },
-  cpsJdGoodsShotUrlSite: function cpsJdGoodsShotUrlSite(token, materialUrl, couponUrl) {
-    return request('/cpsJdGoods/shotUrl/site', true, 'post', { token: token, materialUrl: materialUrl, couponUrl: couponUrl });
-  },
-  cpsJdOrders: function cpsJdOrders(data) {
-    return request('/cpsJdOrder/list', true, 'post', data);
-  },
-  cpsJdOrderDetail: function cpsJdOrderDetail(token, id) {
-    return request('/cpsJdOrder/detail', true, 'get', { token: token, id: id });
-  },
-  cpsPddBeian: function cpsPddBeian(token) {
-    return request('/cpsPddGoods/beian', true, 'get', { token: token });
-  },
-  cpsPddGoodsDetail: function cpsPddGoodsDetail(data) {
-    return request('/cpsPddGoods/detail', true, 'get', data);
-  },
-  cpsPddGoodsShotUrl: function cpsPddGoodsShotUrl(token, goodsSign) {
-    return request('/cpsPddGoods/shotUrl', true, 'get', { token: token, goodsSign: goodsSign });
-  },
-  cpsPddOrders: function cpsPddOrders(data) {
-    return request('/cpsPddOrder/list', true, 'post', data);
-  },
-  cpsPddOrderDetail: function cpsPddOrderDetail(token, id) {
-    return request('/cpsPddOrder/detail', true, 'get', { token: token, id: id });
-  },
-  cpsTaobaoGoodsDetail: function cpsTaobaoGoodsDetail(data) {
-    return request('/cpsTaobaoGoods/detail', true, 'get', data);
-  },
-  cpsTaobaoGoodsShotUrl: function cpsTaobaoGoodsShotUrl(token, content) {
-    return request('/cpsTaobaoGoods/shotUrl', true, 'post', { token: token, content: content });
-  },
-  cpsTaobaoGoodsKouling: function cpsTaobaoGoodsKouling(token, content) {
-    return request('/cpsTaobaoGoods/kouling', true, 'post', { token: token, content: content });
-  },
-  // 回收
-  recycleOrders: function recycleOrders(data) {
-    return request('/recycleOrder/list', true, 'post', data);
-  },
-  recycleOrderApply: function recycleOrderApply(data) {
-    return request('/recycleOrder/apply', true, 'post', data);
-  },
-  recycleOrderDetail: function recycleOrderDetail(token, id) {
-    return request('/recycleOrder/detail', true, 'get', { token: token, id: id });
-  },
-  recycleOrderFahuo: function recycleOrderFahuo(data) {
-    return request('/recycleOrder/fahuo', true, 'post', data);
-  },
-  recycleOrderClose: function recycleOrderClose(token, id) {
-    return request('/recycleOrder/close', true, 'post', { token: token, id: id });
-  },
-  recycleOrderDelete: function recycleOrderDelete(token, id) {
-    return request('/recycleOrder/del', true, 'post', { token: token, id: id });
-  },
+  // cpsJdGoodsCategory: function cpsJdGoodsCategory(parentId, grade) {
+  //   return request('/cpsJdGoods/category', true, 'get', { parentId: parentId, grade: grade });
+  // },
+  // cpsJdGoodsSearch: function cpsJdGoodsSearch(data) {
+  //   return request('/cpsJdGoods/search', true, 'post', data);
+  // },
+  // cpsJdGoodsDetail: function cpsJdGoodsDetail(data) {
+  //   return request('/cpsJdGoods/detail', true, 'get', data);
+  // },
+  // cpsJdGoodsSetExt: function cpsJdGoodsSetExt(data) {
+  //   return request('/cpsJdGoods/ext/set', true, 'post', data);
+  // },
+  // cpsJdGoodsQueryExt: function cpsJdGoodsQueryExt(skuId) {
+  //   return request('/cpsJdGoods/ext/query', true, 'get', { skuId: skuId });
+  // },
+  // cpsJdGoodsShotUrl: function cpsJdGoodsShotUrl(token, skuId) {
+  //   return request('/cpsJdGoods/shotUrl', true, 'get', { token: token, skuId: skuId });
+  // },
+  // cpsJdGoodsShotUrlSite: function cpsJdGoodsShotUrlSite(token, materialUrl, couponUrl) {
+  //   return request('/cpsJdGoods/shotUrl/site', true, 'post', { token: token, materialUrl: materialUrl, couponUrl: couponUrl });
+  // },
+  // cpsJdOrders: function cpsJdOrders(data) {
+  //   return request('/cpsJdOrder/list', true, 'post', data);
+  // },
+  // cpsJdOrderDetail: function cpsJdOrderDetail(token, id) {
+  //   return request('/cpsJdOrder/detail', true, 'get', { token: token, id: id });
+  // },
+  // cpsPddBeian: function cpsPddBeian(token) {
+  //   return request('/cpsPddGoods/beian', true, 'get', { token: token });
+  // },
+  // cpsPddGoodsDetail: function cpsPddGoodsDetail(data) {
+  //   return request('/cpsPddGoods/detail', true, 'get', data);
+  // },
+  // cpsPddGoodsShotUrl: function cpsPddGoodsShotUrl(token, goodsSign) {
+  //   return request('/cpsPddGoods/shotUrl', true, 'get', { token: token, goodsSign: goodsSign });
+  // },
+  // cpsPddOrders: function cpsPddOrders(data) {
+  //   return request('/cpsPddOrder/list', true, 'post', data);
+  // },
+  // cpsPddOrderDetail: function cpsPddOrderDetail(token, id) {
+  //   return request('/cpsPddOrder/detail', true, 'get', { token: token, id: id });
+  // },
+  // cpsTaobaoGoodsDetail: function cpsTaobaoGoodsDetail(data) {
+  //   return request('/cpsTaobaoGoods/detail', true, 'get', data);
+  // },
+  // cpsTaobaoGoodsShotUrl: function cpsTaobaoGoodsShotUrl(token, content) {
+  //   return request('/cpsTaobaoGoods/shotUrl', true, 'post', { token: token, content: content });
+  // },
+  // cpsTaobaoGoodsKouling: function cpsTaobaoGoodsKouling(token, content) {
+  //   return request('/cpsTaobaoGoods/kouling', true, 'post', { token: token, content: content });
+  // },
+  // // 回收
+  // recycleOrders: function recycleOrders(data) {
+  //   return request('/recycleOrder/list', true, 'post', data);
+  // },
+  // recycleOrderApply: function recycleOrderApply(data) {
+  //   return request('/recycleOrder/apply', true, 'post', data);
+  // },
+  // recycleOrderDetail: function recycleOrderDetail(token, id) {
+  //   return request('/recycleOrder/detail', true, 'get', { token: token, id: id });
+  // },
+  // recycleOrderFahuo: function recycleOrderFahuo(data) {
+  //   return request('/recycleOrder/fahuo', true, 'post', data);
+  // },
+  // recycleOrderClose: function recycleOrderClose(token, id) {
+  //   return request('/recycleOrder/close', true, 'post', { token: token, id: id });
+  // },
+  // recycleOrderDelete: function recycleOrderDelete(token, id) {
+  //   return request('/recycleOrder/del', true, 'post', { token: token, id: id });
+  // },
   // 会员卡
   cardList: function cardList(data) {
     return request('/card/list', true, 'get', data);
@@ -2362,9 +2325,7 @@ module.exports = {
   cardBuy: function cardBuy(token, id) {
     return request('/card/buy', true, 'post', { token: token, id: id });
   },
-  cardMyList: function cardMyList(token) {
-    return request('/card/my', true, 'get', { token: token });
-  },
+
   cardMyLogs: function cardMyLogs(data) {
     return request('/card/logs', true, 'post', data);
   },

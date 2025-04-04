@@ -1,4 +1,5 @@
 const WXAPI = require('apifm-wxapi');
+const LZH = require('../../utils/lzh.js')
 const { wxaCode } = require('../../utils/auth');
 Component({
   options: {
@@ -61,7 +62,6 @@ Component({
     },
     async submit() {
       const postData = {
-        token: wx.getStorageSync('token'),
         money: this.data.money,
         remark: this.data.remark,
       }
@@ -79,7 +79,7 @@ Component({
       let res
       if (this.data.payType == 'wx') {
         // https://www.yuque.com/apifm/nu0f75/ppadt8
-        res = await WXAPI.payVariableUrl(url ? url : '/pay/wx/wxapp', postData)
+        res = await LZH.payVariableUrl(url ? url : '/pay/wx/wxapp', postData)
       } else if (this.data.payType == 'alipay') {
         // https://www.yuque.com/apifm/nu0f75/hguh83ekxsh71cn7
         res = await WXAPI.alipayQrcode(postData)

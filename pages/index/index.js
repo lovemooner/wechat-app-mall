@@ -138,7 +138,6 @@ Page({
     })
     that.getCoupons()
     that.getNotice()
-    that.kanjiaGoods()
     that.pingtuanGoods()
     this.adPosition()
     // 读取系统参数
@@ -169,26 +168,7 @@ Page({
       })
     }
   },
-  async miaoshaGoods(){
-    // https://www.yuque.com/apifm/nu0f75/wg5t98
-    const res = await WXAPI.goodsv2({
-      miaosha: true
-    })
-    if (res.code == 0) {
-      res.data.result.forEach(ele => {
-        const _now = new Date().getTime()
-        if (ele.dateStart) {
-          ele.dateStartInt = new Date(ele.dateStart.replace(/-/g, '/')).getTime() - _now
-        }
-        if (ele.dateEnd) {
-          ele.dateEndInt = new Date(ele.dateEnd.replace(/-/g, '/')).getTime() -_now
-        }
-      })
-      this.setData({
-        miaoshaGoods: res.data.result
-      })
-    }
-  },
+ 
   async initBanners(){
     const _data = {}
     // 读取头部轮播图
@@ -219,7 +199,7 @@ Page({
     // 获取购物车数据，显示TabBarBadge
     TOOLS.showTabBarBadge()
     this.goodsDynamic()
-    this.miaoshaGoods()
+
     const refreshIndex = wx.getStorageSync('refreshIndex')
     if (refreshIndex) {
       this.onPullDownRefresh()
@@ -337,34 +317,7 @@ Page({
     this.getGoodsList()
     wx.stopPullDownRefresh()
   },
-  // 获取砍价商品
-  async kanjiaGoods(){
-    // https://www.yuque.com/apifm/nu0f75/wg5t98
-    const res = await WXAPI.goodsv2({
-      kanjia: true
-    });
-    if (res.code == 0) {
-      const kanjiaGoodsIds = []
-      res.data.result.forEach(ele => {
-        kanjiaGoodsIds.push(ele.id)
-      })
-      const goodsKanjiaSetRes = await WXAPI.kanjiaSet(kanjiaGoodsIds.join())
-      if (goodsKanjiaSetRes.code == 0) {
-        res.data.result.forEach(ele => {
-          const _process = goodsKanjiaSetRes.data.find(_set => {
-            return _set.goodsId == ele.id
-          })
-          if (_process) {
-            ele.process = 100 * _process.numberBuy / _process.number
-            ele.process = ele.process.toFixed(0)
-          }
-        })
-        this.setData({
-          kanjiaList: res.data.result
-        })
-      }
-    }
-  },
+  
   goCoupons: function (e) {
     wx.switchTab({
       url: "/pages/coupons/index"
@@ -373,7 +326,7 @@ Page({
   pingtuanGoods(){ // 获取团购商品列表
     const _this = this
     // https://www.yuque.com/apifm/nu0f75/wg5t98
-    WXAPI.goodsv2({
+    LZH.goodsv2({
       pingtuan: true
     }).then(res => {
       if (res.code === 0) {
