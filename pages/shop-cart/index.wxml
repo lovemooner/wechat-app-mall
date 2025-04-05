@@ -14,7 +14,7 @@
     </van-tab>
   </van-tabs>
   <template wx:else is="{{shippingCarInfo.items.length > 0 ? 'cart-goods-list' : 'no-goods'}}"
-  data="{{...shippingCarInfo, saveHidden, allSelect, noSelect,shopCarType}}"></template>
+  data="{{...shippingCarInfo,totalPrice ,saveHidden, allSelect, noSelect,shopCarType}}"></template>
 
   
 </view>

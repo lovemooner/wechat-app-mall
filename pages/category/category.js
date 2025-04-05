@@ -239,6 +239,7 @@ Page({
       return
     }
     
+    debugger
     if (!curGood.propertyIds && !curGood.hasAddition) {
       // 直接调用加入购物车方法
       const res = await LZH.shoppingCarInfoAddItem(curGood.id, 1, [])
@@ -259,7 +260,6 @@ Page({
           icon: 'success'
         })
         wx.showTabBar()
-        debugger 
         TOOLS.showTabBarBadge() // 获取购物车数据，显示TabBarBadge
       } else {
         wx.showToast({

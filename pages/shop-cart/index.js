@@ -11,6 +11,8 @@ Page({
     shopCarType: 0, //0自营 1云货架
     saveHidden: true,
     allSelect: true,
+    shoppingCartItems:[],
+    totalPrice: 0,
     delBtnWidth: 120, //删除按钮宽度单位（rpx）
     price: 10
   },
@@ -42,9 +44,11 @@ Page({
       shopping_cart_vop_open: wx.getStorageSync('shopping_cart_vop_open')
     })
   },
+
   onShow: function () {
     this.shoppingCarInfo()
   },
+  
   async shoppingCarInfo() {
     const token = wx.getStorageSync('token')
     if (!token) {
@@ -53,11 +57,6 @@ Page({
     
     var res = await LZH.shoppingCarInfo()
     if (res.code == 0) {
-        res.data.items.forEach(ele => {
-          if (!ele.stores || ele.status == 1) {
-            ele.selected = false
-          }
-        })
       this.setData({
         shippingCarInfo: res.data
       })
@@ -143,13 +142,7 @@ Page({
     const index = e.currentTarget.dataset.index;
     const item = this.data.shippingCarInfo.items[index]
     const number = item.number + 1
-    const token = wx.getStorageSync('token')
-    if(this.data.shopCarType == 0){
-      var res = await LZH.shoppingCarInfoModifyNumber(item.id, number)
-    }
-    else if(this.data.shopCarType == 1){
-      var res = await WXAPI.jdvopCartModifyNumberV2(token, item.key, number)
-    }    
+    await LZH.shoppingCarInfoModifyNumber(item.id, number)
     this.shoppingCarInfo()
   },
   async jianBtnTap(e) {
@@ -173,20 +166,40 @@ Page({
   changeCarNumber(e) {
     const key = e.currentTarget.dataset.key
     const num = e.detail.value
-    const token = wx.getStorageSync('token')
-    LZH.shoppingCarInfoModifyNumber(token, key, num).then(res => {
+    LZH.shoppingCarInfoModifyNumber(key, num).then(res => {
       this.shoppingCarInfo()
     })
   },
   async radioClick(e) {
     var index = e.currentTarget.dataset.index;
     var item = this.data.shippingCarInfo.items[index]
-    const token = wx.getStorageSync('token')
-    if (!item.stores || item.status == 1) {
-        return
-    }
-    var res = await LZH.shoppingCartSelected(item.id, !item.selected)
-    this.shoppingCarInfo()
+    //取反 控制radio checked
+    item.selected=!item.selected
+
+    let totalPrice=0;
+    const productList= this.data.shippingCarInfo.items;
+    productList.forEach(ele => {
+      if(ele.selected==true){
+        totalPrice+=ele.productPrice;
+      }
+    })
+    
+    this.setData({
+      shippingCarInfo: this.data.shippingCarInfo,
+      totalPrice: totalPrice
+    })
+  },
+  toPayOrder(){
+    const productIds = []
+    const productList= this.data.shippingCarInfo.items;
+    productList.forEach(ele => {
+      if(ele.selected==true){
+        productIds.push(ele.productId)
+      }
+    })
+    wx.navigateTo({
+      url: '/pages/to-pay-order/index?shopCarType=0&productIds='+productIds,
+    })
   },
   onChange(event) {
     this.setData({

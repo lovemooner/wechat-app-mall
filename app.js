@@ -93,41 +93,62 @@ App({
 
   onShow (e) {
     // 保存邀请人
-    if (e && e.query && e.query.inviter_id) {
-      wx.setStorageSync('referrer', e.query.inviter_id)
-      if (e.shareTicket) {
-        wx.getShareInfo({
-          shareTicket: e.shareTicket,
-          success: res => {
-            wx.login({
-              success(loginRes) {
-                if (loginRes.code) {
-                  WXAPI.shareGroupGetScore(
-                    loginRes.code,
-                    e.query.inviter_id,
-                    res.encryptedData,
-                    res.iv
-                  ).then(_res => {
-                    console.log(_res)
-                  }).catch(err => {
-                    console.error(err)
-                  })
-                } else {
-                  console.error('登录失败！' + loginRes.errMsg)
-                }
-              }
-            })
-          }
-        })
-      }
-    }
+    // if (e && e.query && e.query.inviter_id) {
+    //   wx.setStorageSync('referrer', e.query.inviter_id)
+    //   if (e.shareTicket) {
+    //     wx.getShareInfo({
+    //       shareTicket: e.shareTicket,
+    //       success: res => {
+    //         wx.login({
+    //           success(loginRes) {
+    //             if (loginRes.code) {
+    //               WXAPI.shareGroupGetScore(
+    //                 loginRes.code,
+    //                 e.query.inviter_id,
+    //                 res.encryptedData,
+    //                 res.iv
+    //               ).then(_res => {
+    //                 console.log(_res)
+    //               }).catch(err => {
+    //                 console.error(err)
+    //               })
+    //             } else {
+    //               console.error('登录失败！' + loginRes.errMsg)
+    //             }
+    //           }
+    //         })
+    //       }
+    //     })
+    //   }
+    // }
     // 自动登录
     AUTH.checkHasLogined().then(isLogined => {
-      if (!isLogined) {
-        // 未登录
-        if (CONFIG.openIdAutoRegister) {
-          // 进行登陆，用户不存在则注册
-          AUTH.authorize().then( aaa => {
+      if(isLogined){  // 已登录
+         if (CONFIG.bindSeller) {
+          AUTH.bindSeller()
+        }
+        this.getUserApiInfo()
+        return;
+      }
+ 
+      // 未登录
+      if (CONFIG.openIdAutoRegister) {
+        // 进行登陆，用户不存在则注册
+        AUTH.authorize().then( aaa => {
+          if (CONFIG.bindSeller) {
+            AUTH.bindSeller()
+          }
+          this.getUserApiInfo().then(() => {
+            if (this.loginOK) {
+              this.loginOK()
+            }
+          })
+        })
+      } else {
+        // 只是登陆
+        AUTH.login20241025().then( res => {
+          if (res.code == 0) {
+            // 登陆成功
             if (CONFIG.bindSeller) {
               AUTH.bindSeller()
             }
@@ -136,35 +157,15 @@ App({
                 this.loginOK()
               }
             })
-          })
-        } else {
-          // 只是登陆
-          AUTH.login20241025().then( res => {
-            if (res.code == 0) {
-              // 登陆成功
-              if (CONFIG.bindSeller) {
-                AUTH.bindSeller()
-              }
-              this.getUserApiInfo().then(() => {
-                if (this.loginOK) {
-                  this.loginOK()
-                }
-              })
-            } else {
-              // 用户没注册
-              if (this.loginFail) {
-                this.loginFail()
-              }
+          } else {
+            // 用户没注册
+            if (this.loginFail) {
+              this.loginFail()
             }
-          })
-        }
-      } else {
-        // 已登录
-        if (CONFIG.bindSeller) {
-          AUTH.bindSeller()
-        }
-        this.getUserApiInfo()
+          }
+        })
       }
+      
     })
   },
   async getUserApiInfo() {

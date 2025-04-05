@@ -213,7 +213,7 @@ Page({
 
   },
   getOrderStatistics() {
-    WXAPI.orderStatistics(wx.getStorageSync('token')).then(res => {
+    LZH.orderStatistics().then(res => {
       if (res.code == 0) {
         const badges = this.data.badges;
         badges[1] = res.data.count_id_no_pay

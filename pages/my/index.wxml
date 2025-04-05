@@ -32,13 +32,9 @@
 <van-cell title="常用功能" />
 <van-grid clickable>
   <van-grid-item icon="todo-list-o" text="历史购买" url="/pages/goods/his" />
-  <van-grid-item wx:if="{{canHX}}" icon="scan" text="扫码核销" bind:click="scanOrderCode" />
-  <van-grid-item icon="paid" text="优惠买单" url="/pages/maidan/index" />
-  <van-grid-item icon="balance-list-o" text="资金明细" url="/pages/asset/index" />
-  <van-grid-item icon="coupon-o" text="优惠券" url="/pages/coupons/index" link-type="switchTab" />
 </van-grid>
 
-<van-cell-group title="其他功能">
+<van-cell-group title="常用功能">
   <van-cell title="帮助中心" is-link url="/pages/help/index" />
   <van-cell wx:if="{{ customerServiceType == 'QW' }}" title="联系客服" is-link bind:click="customerService" />
   <van-cell title="个人信息" is-link url="/pages/my/info-menu" />

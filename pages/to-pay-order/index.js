@@ -48,6 +48,7 @@ Page({
     userScore: 0, // 用户可用积分
     deductionScore: '-1', // 本次交易抵扣的积分数， -1 为不抵扣，0 为自动抵扣，其他金额为抵扣多少积分
     shopCarType: 0, //0自营购物车，1云货架购物车
+    productIds:[],
     dyopen: 0, // 是否开启订阅
     dyunit: 0, // 按天
     dyduration: 1, // 订阅间隔
@@ -81,7 +82,6 @@ Page({
       return
     }
     this.doneShow()
-    
   },
   async doneShow() {
     let goodsList = []
@@ -94,18 +94,16 @@ Page({
       }
     } else {
       //购物车下单
-      var res = await LZH.shoppingCarInfo()
+      var res=await LZH.getProduct({'productIds':this.data.productIds});
+    
       if (res.code == 0) {
-        goodsList = res.data.items.filter(ele => {
-          return ele.selected
-        })
+        goodsList = res.data.records;
         const shopIds = []
         goodsList.forEach(ele => {
           shopIds.push(ele.shopId)
         })
       }
     }
-
     this.setData({
       goodsList,
       peisongType: this.data.peisongType
@@ -122,6 +120,8 @@ Page({
       order_pay_user_balance: wx.getStorageSync('order_pay_user_balance'),
       zt_open_hx: wx.getStorageSync('zt_open_hx'),
     }
+
+    _data.productIds=e.productIds;
     if (e.orderType) {
       _data.orderType = e.orderType
     }
@@ -160,6 +160,7 @@ Page({
   async createOrder(e) {
     // shopCarType: 0 //0自营购物车，1云货架购物车
     const loginToken = wx.getStorageSync('token') // 用户登录 token
+    
     const postData = {
       goodsJsonStr: this.data.goodsJsonStr,
       remark: this.data.remark,
@@ -263,7 +264,7 @@ Page({
       this.setData({
         totalScoreToPay: res.data.score,
         isNeedLogistics: res.data.isNeedLogistics, //vop 商品必须快递
-        allGoodsAndYunPrice: res.data.amountReal,
+        allGoodsAndYunPrice: res.data.totalPrice,
         goodsAdditionalPriceMap: res.data.goodsAdditionalPriceMap,
         yunPrice: res.data.amountLogistics,
         amountLogistics2: res.data.amountLogistics2,
@@ -332,7 +333,6 @@ Page({
     if (goodsList.length == 0) {
       return
     }
-
     
     const goodsJsonStr = []
     for (let i = 0; i < goodsList.length; i++) {
@@ -361,7 +361,8 @@ Page({
         })
         _goodsJsonStr.goodsAdditionList = goodsAdditionList
       }
-      _goodsJsonStr.productId = carShopBean.productId
+      
+      _goodsJsonStr.productId = carShopBean.id
       _goodsJsonStr.number = carShopBean.number
       _goodsJsonStr.logisticsType = 0
       goodsJsonStr.push(_goodsJsonStr)
@@ -475,36 +476,7 @@ Page({
       bindMobileShow: false
     })
   },
-  deductionScoreChange(event) {
-    this.setData({
-      deductionScore: event.detail,
-    })
-    this.processYunfei()
-  },
-  deductionScoreClick(event) {
-    const {
-      name
-    } = event.currentTarget.dataset;
-    this.setData({
-      deductionScore: name,
-    })
-    this.processYunfei()
-  },
-  cardChange(event) {
-    this.setData({
-      cardId: event.detail,
-    })
-    this.processYunfei()
-  },
-  cardClick(event) {
-    const {
-      name
-    } = event.currentTarget.dataset;
-    this.setData({
-      cardId: name,
-    })
-    this.processYunfei()
-  },
+ 
   dateStartclick(e) {
     this.setData({
       dateStartpop: true

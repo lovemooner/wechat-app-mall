@@ -25,39 +25,12 @@
         </navigator>
       </view>
     </block>
-    <!-- 三级级分类展示 -->
-    <!-- <view wx:for="{{categories}}" wx:key="id" wx:if="{{item.pid == categorySelected.id}}">
-      <navigator url="/pages/goods/list?categoryId={{item.id}}">
-        <view class="no-data medium-category">
-          <view class="line"></view>
-          <view class="txt">{{item.name}}</view>
-          <view class="line"></view>
-        </view>
-      </navigator>
-      <view class="small-category-box">
-        <navigator wx:for="{{categories}}" wx:for-item="small" wx:key="id" wx:if="{{small.pid == item.id}}" url="/pages/goods/list?categoryId={{small.id}}">
-          <view class="small-category">
-            <image mode="aspectFill" src="{{small.icon}}"></image>
-            <view>{{small.name}}</view>
-          </view>
-        </navigator>
-      </view>
-    </view> -->
+    
     <!-- 显示右侧商品 -->
     <wxs module="goodsDetailPage">
     module.exports = {
       url : function(item) {
-        if (item.supplyType == 'cps_jd') {
-          return '/packageCps/pages/goods-details/cps-jd?id=' + item.id
-        } else if (item.supplyType == 'vop_jd') {
-          return '/pages/goods-details/vop?id=' + item.yyId + '&goodsId=' + item.id
-        } else if (item.supplyType == 'cps_pdd') {
-          return '/packageCps/pages/goods-details/cps-pdd?id=' + item.id
-        } else if (item.supplyType == 'cps_taobao') {
-          return '/packageCps/pages/goods-details/cps-taobao?id=' + item.id
-        } else {
           return '/pages/goods-details/index?id=' + item.id
-        }
       }
     }
     </wxs>

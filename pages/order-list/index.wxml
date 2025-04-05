@@ -6,37 +6,38 @@
 <view class="container">
   <van-empty wx:if="{{ !orderList }}" description="暂无订单" />
   <view class="order-list" hidden="{{orderList ? false : true}}">
-    <view class="a-order" wx:for="{{orderList}}" wx:key="index">
-      <van-cell title="{{item.orderCode}}" value="{{item.statusStr}}" is-link url="/pages/order-details/index?id={{item.id}}" />
+    <view class="a-order" wx:for="{{orderList}}" wx:key="index" wx:for-item= 'order'>
+      <van-cell title="{{order.orderCode}}" value="{{order.statusStr}}" is-link url="/pages/order-details/index?id={{order.id}}" />
       <wxs module="goodsDetailPage">
           module.exports = {
-            url : function(item) {
-                return '/pages/goods-details/index?id=' + item.goodsId
+            url : function(order) {
+                return '/pages/goods-details/index?id=' + order.productId
             }
           }
       </wxs>
       <scroll-view class="goods-img-container" scroll-x="true">
-        <view class="img-box" wx:for="{{goodsMap[item.id]}}" wx:key="index">
-          <navigator url="{{ goodsDetailPage.url(item) }}">
-            <image src="{{item.coverImgUrl}}" class="goods-img"></image>
+        <view class="img-box" wx:for="{{order.productList}}" wx:key="index" wx:for-item= 'product'>
+          <navigator url="{{ goodsDetailPage.url(product) }}">
+            <image src="{{product.coverImgUrl}}" class="goods-img"></image>
           </navigator>
         </view>
       </scroll-view>
       <view class="goods-price">
-        共 {{item.productNumber}} 件商品 合计：
-        <text class="p">¥ {{item.totalPrice}}</text>
+        共 {{order.productNumber}} 件商品 合计：
+        <text class="p">¥ {{order.totalPrice}}</text>
       </view>
       <view class="goods-info">
         <view class="goods-des">
-          <view class="remark" wx:if="{{item.remark && item.remark != ''}}">{{item.remark}}</view>
-          <view>{{item.dateAdd}} </view>
+          <view class="remark" wx:if="{{order.remark && order.remark != ''}}">{{order.remark}}</view>
+          <view>{{order.dateAdd}} </view>
         </view>
       </view>
       <view class="price-box">
-        <view class="btn" hidden="{{item.status==0? false : true}}" bindtap="cancelOrderTap" data-id="{{item.id}}">取消订单</view>
-        <view class="btn active" hidden="{{item.status==0? false : true}}" bindtap="toPayTap" data-id="{{item.id}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view>
-        <view wx:if="{{ item.status == 0 && sphpay_open == '1' }}" class="btn active" bindtap="wxSphGetpaymentparams" data-id="{{item.id}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">视频号支付</view>
-        <view class="btn active" hidden="{{(item.status==0 || item.status==-1) ? true : false}}" bindtap="refundApply" data-id="{{item.id}}" data-amount='{{item.amountReal}}'>退换货</view>
+        <view class="btn" hidden="{{order.status==0? false : true}}" bindtap="cancelOrderTap" data-id="{{order.id}}">取消订单</view>
+        <view class="btn active" hidden="{{order.status==0? false : true}}" bindtap="toPayTap" data-id="{{order.id}}" data-money="{{order.amountReal}}" data-score="{{order.score}}">马上付款</view>
+        <view wx:if="{{ order.status == 0 && sphpay_open == '1' }}" class="btn active" bindtap="wxSphGetpaymentparams" data-id="{{order.id}}" data-money="{{order.amountReal}}" data-score="{{order.score}}">视频号支付</view>
+        <view class="btn active" hidden="{{(order.status==0 || order.status==-1) ? true : false}}"       bindtap="refundApply" data-id="{{order.id}}" data-amount='{{order.amountReal}}'>退换货
+        </view>
       </view>
     </view>
   </view>

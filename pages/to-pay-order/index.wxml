@@ -127,7 +127,7 @@
   <view class="bottom-box"></view>
   <van-submit-bar
     price="{{ allGoodsAndYunPrice*100 }}"
-    button-text="提交订单"
+    button-text="提交订单" 
     loading="{{ btnLoading }}"
     bind:submit="goCreateOrder"
   />

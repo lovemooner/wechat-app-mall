@@ -70,7 +70,7 @@ Page({
     return count > 99 ? '99+' : count;
   },
   orderStatistics: function () {
-    WXAPI.orderStatistics(wx.getStorageSync('token')).then((res) => {
+    LZH.orderStatistics().then((res) => {
       if (res.code == 0) {
         const {
           count_id_no_confirm,

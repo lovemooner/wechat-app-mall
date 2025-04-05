@@ -505,9 +505,7 @@ module.exports = {
   register_simple: function register_simple(data) {
     return request('/user/wxapp/register/simple', true, 'post', data);
   },
-  authorize: function authorize(data) {
-    return request('/user/wxapp/authorize', true, 'post', data);
-  },
+
   ttAuthorize: function ttAuthorize(data) {
     return request('/user/tt/microapp/authorize', true, 'post', data);
   },
@@ -1878,14 +1876,7 @@ module.exports = {
   siteStatistics: function siteStatistics() {
     return request('/site/statistics', true, 'get');
   },
-  orderStatistics: function orderStatistics(token) {
-    return request('/order/statistics', true, 'get', {
-      token: token
-    });
-  },
-  orderStatisticsv2: function orderStatisticsv2(data) {
-    return request('/order/statistics', true, 'get', data);
-  },
+
   siteStatisticsSaleroom: function siteStatisticsSaleroom(data) {
     return request('/site/statistics/saleroom', true, 'get', data);
   },

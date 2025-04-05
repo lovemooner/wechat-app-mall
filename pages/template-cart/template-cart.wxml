@@ -42,16 +42,15 @@
           </view>
         </view>
       </view>
-    
   </view>
   
   <view class="jiesuan-box">
     <view class="left-price">
-      <view wx:if="{{ score }}" class="total">合计：¥ {{price}} + {{score}} 积分</view>
-      <view wx:else class="total">合计：¥ {{price}}</view>
+      <view wx:if="{{ score }}" class="total">合计：¥ {{totalPrice}} + {{score}} 积分</view>
+      <view wx:else class="total">合计：¥ {{totalPrice}}</view>
     </view>
     <view class="to-pay-btn">
-      <navigator url="/pages/to-pay-order/index?shopCarType={{shopCarType}}">去结算</navigator>
+      <button  bindtap="toPayOrder" type="primary"> 去结算 </button>
     </view>
   </view>
 </template>

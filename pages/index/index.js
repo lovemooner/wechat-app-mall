@@ -21,6 +21,7 @@ Page({
     pageSize: 20
   },
   tabClick(e) {
+    debugger
     // 商品分类点击
     const category = this.data.categories.find(ele => {
       return ele.id == e.currentTarget.dataset.id

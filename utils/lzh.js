@@ -28,6 +28,9 @@ var request = function request(url, method, data) {
 };
 
 module.exports = {
+  authorize: function authorize(data) {
+    return request('/user/wxapp/authorize', 'post', data);
+  },
   getProduct: function getProduct(data) {
     if (!data) {
       data = {};
@@ -78,18 +81,18 @@ module.exports = {
     });``
   },
 
-  shoppingCarInfoAddItem: function shoppingCarInfoAddItem(token, goodsId, number, sku, addition) {
-    var type = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
+  shoppingCarInfoAddItem: function shoppingCarInfoAddItem(productId, number, sku, addition) {
+    var type = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
 
     return request('/shopping-cart/add', 'post', {
-      goodsId: goodsId,
+      productId: productId,
       number: number,
       sku: sku && sku.length > 0 ? JSON.stringify(sku) : '',
       addition: addition && addition.length > 0 ? JSON.stringify(addition) : '',
       type: type
     });
   },
-
+  
   shoppingCarInfo: function shoppingCarInfo() {
     var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     return request('/shopping-cart/info', 'get', {
@@ -125,6 +128,13 @@ module.exports = {
       hxNumber: hxNumber,
       peisongOrderId: peisongOrderId
     });
+  },
+
+  orderStatistics: function orderStatistics() {
+    return request('/order/statistics', 'get');
+  },
+  orderStatisticsv2: function orderStatisticsv2(data) {
+    return request('/order/statistics', 'get', data);
   },
 
   modifyUserInfo: function modifyUserInfo(data) {
